@@ -1,0 +1,33 @@
+{
+    "name" : "web-size-it-server",
+    "version": "1.0.0",
+    "private" : "true",
+    "description" : "mvp1",
+    "main" : "server.js",
+    "scripts" : {
+        "test": "Test command needs to be rewritten",
+        "start": "node server.js"
+    },
+    "repository" : {
+        "type" : "git",
+        "url" : "git+https://github.com/GregorioBaldari/web-size-it-server.git"
+    },
+    "keywords" : [
+        "size-it",
+        "back",
+        "back",
+        "end",
+        "application"
+    ],
+    "author": "Gregorio Baldari",
+    "license" : "ISC",
+    "bugs" : {
+        "url" : "https://github.com/GregorioBaldari/web-size-it-server/issues"
+    },
+    
+    "homepage" : "https://github.com/GregorioBaldari/web-size-it-server#readme",
+    "dependencies" : {
+        "express" : "^4.13.3",
+        "ejs": "~1.0.0"
+    }
+}
