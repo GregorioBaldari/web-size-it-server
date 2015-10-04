@@ -3,6 +3,8 @@ var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var port = process.env.PORT || 3000;
+var team = []; //Store a list of client
+var websizeclient;
 
 require('./router/main')(app);
 
@@ -24,20 +26,51 @@ server.listen(app.get('port'), function() {
 });
 
 io.on('connection', function (socket) {
-    console.log('An application is connected');
-    socket.on('newSize', function(data){
-        console.log('Riceived Size: ' + data.size);
-        socket.broadcast.emit('resultSize', {
-          size: data.size
+    team.push(socket);
+    console.log('Another application is connected');
+    console.log('Connected applications are: ' + team.length);
+    
+    socket.on('updateModel', function(data){
+        console.log('Riceived an Update from ' + data.userName);
+        socket.broadcast.emit('newData', {
+            risk: data.risk,
+            effort: data.effort,
+            complexity: data.complexity,
+            size: data.size,
+            userName: data.userName,
+            userId: team.indexOf(socket)
         });
         console.log('Emitted Size: ' + data.size);
     })
     
-    socket.on('changeName', function(data){
-        console.log('Riceived a change Name: ' + data.userName);
+    //WHen mobile register with a name
+    socket.on('newUser', function(data){
+        console.log('User Joined: ' + data.userName);
         socket.broadcast.emit('userName', {
-          userName: data.userName
-        });
-        console.log('Emitted User Name: ' + data.userName);
+            userName: data.userName,
+            userId: this.id
+                });
+        console.log('Emitted User Name: ' + data.userName + ' with userid: ' + this.id);
     })
+    
+    
+
+    socket.on('disconnect', function() {
+        team.splice(team.indexOf(socket), 1);
+    });
+    
+    socket.on('client-connection', function(){
+        console.log('Client application is now connected');
+        team.splice(team.indexOf(socket), 1);
+        websizeclient = socket;
+        console.log('At the moment the connected applications are: ' + team.length);
+        /*
+        clients.forEach(function(socket, index) {
+            socket.emit('teamMember', listings);   // send jobs
+            });
+        });
+        */
+    });
+    
+    
 });
