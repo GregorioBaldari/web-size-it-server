@@ -56,10 +56,11 @@ io.on('connection', function (socket) {
     
 
     socket.on('disconnect', function() {
-        team.splice(team.indexOf(socket), 1);
+        console.log('Disconnected user at index: ' + team.indexOf(socket));
         socket.broadcast.emit('userDisconnection', {
             userId: team.indexOf(socket)
                 });
+        team.splice(team.indexOf(socket), 1);
     });
     
     socket.on('client-connection', function(){
