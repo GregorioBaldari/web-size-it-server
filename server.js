@@ -58,7 +58,7 @@ io.on('connection', function (socket) {
     socket.on('disconnect', function() {
         team.splice(team.indexOf(socket), 1);
         socket.broadcast.emit('userDisconnection', {
-            userID: team.indexOf(socket)
+            userId: team.indexOf(socket)
                 });
     });
     
