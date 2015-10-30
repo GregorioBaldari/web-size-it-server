@@ -24,9 +24,12 @@ server.listen(app.get('port'), function() {
 //TO DO
 // Let User Create Name Space
 // Let mmobile app link to created Name Space
-var nsp = io.of('/projectSpace');
+//Commented becouse it works on local but not on remote
+//var nsp = io.of('/projectSpace');
+// io.on('connection', function (socket) {
 
-nsp.on('connection', function (socket) {
+
+io.on('connection', function (socket) {
     team.push(socket);
     console.log('Another application is connected');
     console.log('Connected applications are: ' + team.length);
