@@ -20,7 +20,13 @@ server.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
 
-io.on('connection', function (socket) {
+//Project Space.
+//TO DO
+// Let User Create Name Space
+// Let mmobile app link to created Name Space
+var nsp = io.of('/projectSpace');
+
+nsp.on('connection', function (socket) {
     team.push(socket);
     console.log('Another application is connected');
     console.log('Connected applications are: ' + team.length);
@@ -36,24 +42,34 @@ io.on('connection', function (socket) {
             userName: data.userName,
             userId: team.indexOf(socket)
         });
-        console.log('Emitted Size: ' + data.size);
+        console.log('Emitted Size: ' + data.size + ' from UserID: ' + team.indexOf(socket) + ' with UserName: ' + data.userName);
     })
     
-    //When Client send 'disconnect' event, remove the client from the team array
+    //When Mobile app send 'disconnect' event, remove the client from the team array
+    //If it's not in team array ( team.indexOf(socket) == -1) this means that the Client is disconnected!
     socket.on('disconnect', function() {
-        console.log('Disconnected user at index: ' + team.indexOf(socket));
-        socket.broadcast.emit('userDisconnection', {
-            userId: team.indexOf(socket)
-                });
-        team.splice(team.indexOf(socket), 1);
+        if(team.indexOf(socket) == -1){
+            console.log('*****Desktop App is disconnected*****');
+            websizeclient = undefined;
+        } else{
+            console.log('*****Mobile App user disconnected****');
+            console.log('User index: ' + team.indexOf(socket));
+            console.log('User username: ' + team.indexOf(socket).userName);
+            console.log('*************************************');
+            socket.broadcast.emit('userDisconnection', {
+                userId: team.indexOf(socket)
+            });
+            team.splice(team.indexOf(socket), 1);
+        }
     });
     
     //When Client send 'client-connection' event, remove the client from the team array and store it in websizeclient variable.
     socket.on('client-connection', function(){
-        console.log('Client application is now connected');
+        console.log('*****Client application connected******');
         team.splice(team.indexOf(socket), 1);
         websizeclient = socket;
         console.log('At the moment the connected applications are: ' + team.length);
+        console.log('*************************************');
     });
     
     
