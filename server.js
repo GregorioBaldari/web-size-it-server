@@ -42,6 +42,7 @@ io.on('connection', function (socket) {
             effort: data.effort,
             complexity: data.complexity,
             size: data.size,
+            connected: data.connected,
             userName: data.userName,
             userId: team.indexOf(socket)
         });
