@@ -1,0 +1,1 @@
+angular.module('weSizeItApp', ['pbController', 'pbService']);

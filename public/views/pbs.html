@@ -1,0 +1,157 @@
+<!doctype html>
+
+<!-- ASSIGN OUR ANGULAR MODULE -->
+<html ng-app="weSizeItApp">
+<head>
+	<!-- META -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
+
+	<title>Node/Angular Todo App</title>
+
+	<!-- SCROLLS -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"><!-- load bootstrap -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	<style>
+		html 					{ overflow-y:scroll; }
+		body 					{ padding-top:50px; }
+		#pb-list 				{ margin-bottom:30px; }
+		#pb-form 	 			{ margin-bottom:50px; }
+	</style>
+
+	<!-- SPELLS -->
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script><!-- load angular -->
+
+	<script src="../js/controllers/PBsCtrl.js"></script> <!-- load up our controller -->
+	<script src="../js/services/pbService.js"></script> <!-- load our todo service -->
+	<script src="../js/core.js"></script> <!-- load our main application -->
+
+</head>
+<!-- SET THE CONTROLLER -->
+<body ng-controller="mainController">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Create a New Product Backlog</h3>
+                    </div>
+                    <!-- FORM TO CREATE PRODUCT BACKLOG -->
+                    <div id="pb-form" class="row">
+                        <div class="col-sm-8 col-sm-offset-2 text-center">
+                            <form>
+                                <div class="form-group">
+                                    <input type="text" class="form-control input-lg text-center" placeholder="Product Backlog Name" ng-model="formData.text">
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-lg" ng-click="createPb()">Add</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+<!--        PB ITEM FORM -->
+            <div class="col-sm-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Create a New Story</h3>
+                    </div>
+                    <div id="pb-form" class="row">
+                        <div class="col-sm-8 col-sm-offset-2 text-center">
+                            <form>
+                                <div class="form-group">
+                                    <!-- BIND THIS VALUE TO formData.text IN ANGULAR -->
+                                    <input type="text" class="form-control input-lg text-center" placeholder="User Story Title" ng-model="formPBItemData.text">
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-lg" ng-click="createPbItem()">Add</button>
+                            </form>
+                        </div>
+                    </div>      
+                </div>
+            </div>
+<!--        PB ITEM DETAILS -->
+            <div class="col-sm-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">User Story Details</h3>
+                    </div>
+                    <form role="form">
+                        <div class="form-group">
+                            <label for="pbID">ID</label>
+                            <input type="text" class="form-control" id="pbID" ng-model="pbitem.pbID">
+                        </div>
+                        <div class="form-group">
+                            <label for="title">Title</label>
+                            <input type="text" class="form-control" id="title" ng-model="pbitem.title">
+                        </div>
+                        <div class="form-group">
+                            <label for="narrative">Narrative</label>
+                            <input type="text" class="form-control" id="narrative" ng-model="pbitem.narrative">
+                        </div>
+                        <div class="form-group">
+                            <label for="acceptanceCriteria">Acceptance Criteria</label>
+                            <input type="text" class="form-control" id="acceptanceCriteria" ng-model="pbitem.acceptanceCriteria">
+                        </div>
+                        <div class="form-group">
+                            <label for="size">Size</label>
+                            <input type="text" class="form-control" id="size" ng-model="pbitem.size">
+                        </div>
+                        <div class="form-group">
+                            <label for="risk">Risk</label>
+                            <input type="text" class="form-control" id="risk" ng-model="pbitem.risk">
+                        </div>
+                        <div class="form-group">
+                            <label for="complexity">Complexity</label>
+                            <input type="text" class="form-control" id="complexity" ng-model="pbitem.complexity">
+                        </div>
+                        <div class="form-group">
+                            <label for="effort">Effort</label>
+                            <input type="text" class="form-control" id="effort" ng-model="pbitem.effort">
+                        </div>
+                        <button type="submit" class="btn btn-default" ng-click="updateUserStory()">Submit</button>
+                    </form> 
+                </div>
+            </div>
+        </div>
+        <div class="row">
+<!--        PB LIST -->
+            <div class="col-sm-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Product Backlogs</h3>
+                    </div>
+                    <div id="pb-list" class="row">
+                        <div class="col-sm-4 col-sm-offset-4">
+                            <div class="btn-group-vertical" role="group" aria-label="...">
+                                <button type="button" class="btn btn-default"  ng-repeat="pb in pbs" ng-click="loadPB(pb._id)">{{ pb.name }}</button>
+                            </div>
+                            <p class="text-center" ng-show="loading">
+                                <span class="fa fa-spinner fa-spin fa-3x"></span>
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+<!--        PB ITEMS LIST -->
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">User Story List</h3>
+                    </div>
+                    <div id="pb-list" class="row">
+                        <div class="col-sm-4 col-sm-offset-4">
+                            <div class="btn-group-vertical" role="group" aria-label="...">
+                                <button type="button" class="btn btn-default"  ng-repeat="item in pbitems" ng-click="loadPBItem(item)">{{ item.title }}</button>
+                            </div>
+                            <p class="text-center" ng-show="loading">
+                                <span class="fa fa-spinner fa-spin fa-3x"></span>
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
