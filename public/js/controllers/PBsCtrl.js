@@ -50,13 +50,13 @@ angular.module('pbController', ['ui.sortable'])
 				// call the create function from our service (returns a promise object)
 				PBs.createPBItem($scope.selectedPBId, $scope.formPBItemData)
 
-					// if successful creation, call our get function to get all the new todos
-					.success(function (data) {
-						$scope.formPBItemData = {}; // clear the form so our user is ready to enter another
-						$scope.pbs = data; // assign our new list of todos
-                        $scope.loadPB($scope.selectedPBId);
-                        $scope.loading = false;
-					});
+                // if successful creation, call our get function to get all the new todos
+                .success(function (data) {
+                    $scope.formPBItemData = {}; // clear the form so our user is ready to enter another
+                    $scope.pbs = data; // assign our new list of todos
+                    $scope.loadPB($scope.selectedPBId);
+                    $scope.loading = false;
+                });
 			}
 		};
 		
@@ -80,59 +80,63 @@ angular.module('pbController', ['ui.sortable'])
             console.log($scope.pbitems[$scope.selectedPBId]);
         };
         
-       // SORT USER STORY ==================================================================
-        
+       // SORT USER STORY ==================================================================    
         $scope.sortableOptions = {  
             activate: function() {
-                console.log("activate");
+                //console.log("activate");
             },
             beforeStop: function() {
-                console.log("beforeStop");
+                //console.log("beforeStop");
             },
             change: function() {
                 console.log("change");
             },
             create: function() {
-                console.log("create");
+                //console.log("create");
             },
             deactivate: function() {
-                console.log("deactivate");
+                //console.log("deactivate");
             },
             out: function() {
-                console.log("out");
+                //console.log("out");
             },
             over: function() {
-                console.log("over");
+                //console.log("over");
             },
             receive: function() {
-                console.log("receive");
+                //console.log("receive");
             },
             remove: function() {
-                console.log("remove");
+                //console.log("remove");
             },
             sort: function() {
-                console.log("sort");
+                //console.log("sort");
             },
             start: function() {
-                console.log("start");
+                //console.log("start");
             },
             update: function(e, ui) {
-                console.log("update");
-//
-//                var logEntry = tmpList.map(function(i){
-//                r   eturn i.value;
-//                }).join(', ');
-//                $scope.sortingLog.push('Update: ' + logEntry);
+                console.log("update: " + ui.item.sortable.index);
+
             },
             
+            // UPdate the rank of the User Story 
             stop: function(e, ui) {
-              console.log("stop");
+                $scope.updateUserStoryOrder();
 
-//              // this callback has the changed model
-//              var logEntry = tmpList.map(function(i){
-//                return i.value;
-//              }).join(', ');
-//              $scope.sortingLog.push('Stop: ' + logEntry);
             }
         };
+        
+        $scope.updateUserStoryOrder = function () {
+            $scope.pbitems.forEach( function(value, index) {
+                value.rank = index;
+            })
+            
+             PBs.save($scope.selectedPBId, $scope.pbitems)
+                // if successful creation, call our get function to get all the new todos
+                .success(function (data) {
+                    console.log('User Story List Order Saved')
+                });
+        }
+        
 	}]);

@@ -16,6 +16,10 @@ angular.module('pbService', [])
             
             createPBItem : function (id, pbItemData) {
                 return $http.post('/api/pbs/addItem/' + id, pbItemData);
+            },
+            
+            save : function (id, pbItems) {
+                return $http.put('/api/pbs/updateItem/' + id, pbItems);
             }
 //          Playing with MOngoDb everytime I retrive the all list of PB in ti there are PB Item
 //          At that point I should only modfiy and update

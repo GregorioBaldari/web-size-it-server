@@ -67,6 +67,23 @@ module.exports = function (app) {
             }
         });
     });
+    
+    app.put('/api/pbs/updateItem/:pb_id', function (req, res) {
+        PB.findOne({
+            _id : req.params.pb_id
+        }, function (err, pb) {
+            if (err) {
+                res.send(err);
+                console.log("ERR: " + err)
+            } else {
+                pb.pbitems = req.body;
+                pb.save(function (err) {
+                    if(err) res.send(err);
+                    getPBs(res);
+                })
+            };
+        });
+    });
 //    app.post('/api/pbs/addItem/:pb_id', function (req, res) {
 //        PB.findById({
 //            _id : req.params.pb_id
