@@ -1,4 +1,4 @@
-angular.module('pbController', [])
+angular.module('pbController', ['ui.sortable'])
 
 	// inject the Todo service factory into our controller
 	.controller('mainController', ['$scope','$filter','$http','PBs', function($scope, $filter, $http, PBs) {
@@ -39,8 +39,7 @@ angular.module('pbController', [])
 			}
 		};
 
-        
-        // CREATE A NEW PRODUCT BACKLOG ITEM ==================================================================
+        // CREATE A NEW USER STORY ==================================================================
 		$scope.createPbItem = function () {
 
 			// validate the formData to make sure that something is there
@@ -60,7 +59,8 @@ angular.module('pbController', [])
 					});
 			}
 		};
-		// LOAD PB ITEMS ==================================================================
+		
+        // LOAD PRODUCT BACKLOG USER STORIES ==================================================================
 		$scope.loadPB = function (id) {
             $scope.selectedPBId = id;
 			$scope.loading = true;
@@ -68,15 +68,71 @@ angular.module('pbController', [])
             $scope.loading = false;
 		};
         
-        // LOAD PB ITEM ==================================================================
+        // LOAD USER STORY ==================================================================
 		$scope.loadPBItem = function (item) {
 			$scope.loading = true;
             $scope.pbitem = item;
             $scope.loading = false;
 		};
         
-        // UPDATE PB ITEM ==================================================================
+        // UPDATE USER STORY ==================================================================
         $scope.updateUserStory = function (){
             console.log($scope.pbitems[$scope.selectedPBId]);
+        };
+        
+       // SORT USER STORY ==================================================================
+        
+        $scope.sortableOptions = {  
+            activate: function() {
+                console.log("activate");
+            },
+            beforeStop: function() {
+                console.log("beforeStop");
+            },
+            change: function() {
+                console.log("change");
+            },
+            create: function() {
+                console.log("create");
+            },
+            deactivate: function() {
+                console.log("deactivate");
+            },
+            out: function() {
+                console.log("out");
+            },
+            over: function() {
+                console.log("over");
+            },
+            receive: function() {
+                console.log("receive");
+            },
+            remove: function() {
+                console.log("remove");
+            },
+            sort: function() {
+                console.log("sort");
+            },
+            start: function() {
+                console.log("start");
+            },
+            update: function(e, ui) {
+                console.log("update");
+//
+//                var logEntry = tmpList.map(function(i){
+//                r   eturn i.value;
+//                }).join(', ');
+//                $scope.sortingLog.push('Update: ' + logEntry);
+            },
+            
+            stop: function(e, ui) {
+              console.log("stop");
+
+//              // this callback has the changed model
+//              var logEntry = tmpList.map(function(i){
+//                return i.value;
+//              }).join(', ');
+//              $scope.sortingLog.push('Stop: ' + logEntry);
+            }
         };
 	}]);

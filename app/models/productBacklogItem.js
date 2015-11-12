@@ -8,6 +8,7 @@ var PBItemSchema = mongoose.Schema({
         title: String,
         narrative: String,
         acceptanceCriteria: String,
+        rank: Number,
         size: Number,
         risk: Number,
         effort: Number,
