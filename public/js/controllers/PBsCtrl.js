@@ -8,6 +8,7 @@ angular.module('pbController', ['ui.sortable'])
         $scope.pbs = {};
         $scope.selectedPBId = "";
         $scope.pbitems = {};
+        $scope.pbitem ={}
         
 
 		// GET =====================================================================
@@ -131,9 +132,11 @@ angular.module('pbController', ['ui.sortable'])
             $scope.pbitems.forEach( function(value, index) {
                 value.rank = index;
             })
-            
-             PBs.save($scope.selectedPBId, $scope.pbitems)
-                // if successful creation, call our get function to get all the new todos
+        }
+        
+        $scope.updateUserStory = function() {
+            PBs.save($scope.selectedPBId, $scope.pbitems)
+                // if successful creation, call our get function to get all the new pbs
                 .success(function (data) {
                     console.log('User Story List Order Saved')
                 });
