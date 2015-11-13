@@ -84,28 +84,13 @@ module.exports = function (app) {
             };
         });
     });
-//    app.post('/api/pbs/addItem/:pb_id', function (req, res) {
-//        PB.findById({
-//            _id : req.params.pb_id
-//        }, function (err, pb) {
-//            if (err) {
-//                res.send(err);
-//            } else {
-//                pb.pbitems.push({
-//                    pbItemId: req.params.pbItemId,
-//                    title: req.params.title,
-//                    narrative: req.params.narrative,
-//                    acceptanceCriteria: req.params.acceptanceCriteria,
-//                    size: req.params.size,
-//                    risk: req.params.risk,
-//                    effort: req.params.effort,
-//                    complexity: req.params.complexity
-//                });
-//            }
-//        });
-//    });
-    
+
+ /*   
     app.get('*', function (req, res) {
 		res.sendfile('./public/views/pbs.html'); // load the single view file (angular will handle the page changes on the front-end)
+	});
+ */   
+    app.get('*', function (req, res) {
+		res.sendfile('./public/views/index.html'); // load the single view file (angular will handle the page changes on the front-end)
 	});
 };

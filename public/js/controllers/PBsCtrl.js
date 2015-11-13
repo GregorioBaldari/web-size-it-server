@@ -62,10 +62,11 @@ angular.module('pbController', ['ui.sortable'])
 		};
 		
         // LOAD PRODUCT BACKLOG USER STORIES ==================================================================
-		$scope.loadPB = function (id) {
+		$scope.loadPB = function (id) {        
             $scope.selectedPBId = id;
 			$scope.loading = true;
-            $scope.pbitems = $filter('filter')($scope.pbs, {_id: id})[0].pbitems;
+            PBs.setCurrentProductBacklog($filter('filter')($scope.pbs, {_id: id})[0]);
+            $scope.pbitems = PBs.getCurrentProductBacklog().pbitems;
             $scope.loading = false;
 		};
         
