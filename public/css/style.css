@@ -16,3 +16,86 @@
     padding: 8px;
     padding-left: 14px;
 }
+
+commands-container {
+    float: left
+}
+
+.parameterSelector{
+    width: 100%; 
+}
+
+.parameterSelectorItem{
+    float: left;
+    width: 20%;
+}
+
+.parameterSelectorItemTraditional{
+    width: 25%;
+}
+
+.selector-heading{
+    text-align: -webkit-center;
+}
+
+.nav, .pagination, .carousel, .panel-title a { 
+    cursor: pointer; 
+}
+
+.size-result {
+    text-align: -webkit-center;
+    font-size: 5em;
+}
+
+
+.online-status{
+    color: green;
+}
+
+.offline-status{
+    color: red;
+}
+
+h1 {
+    background-color: #0275d8;
+    margin-top: 0;
+    margin-bottom: 3px;
+    color: #fff;
+    font-size: 14px;
+    padding: 2px;
+}
+
+td {
+    text-align: center;
+}
+
+th{
+    text-align: center;
+}
+
+.menu-btn {
+    border: none;
+    display: inline-block;
+    outline: 0;
+    padding: 2px 5px;
+    vertical-align: middle;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none !important;
+    color: #fff;
+    background-color: #000;
+    text-align: center;
+    transition: .2s ease-out;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: Verdana, sans-serif;
+    font-size: 5px;
+    color: #FFFFFF;
+    background-color: #8AC007;
+    border-radius: 3px; /* Android 2.1+, Chrome, Firefox 4+, IE 9+, iOS 4+, Opera 10.50+, Safari 5+ */
+    /* useful if you don't want a bg color from leaking outside the border: */
+    background-clip: padding-box; /* Android 2.2+, Chrome, Firefox 4+, IE 9+, iOS 4+, Opera 10.50+, Safari 4+ */
+    -webkit-box-shadow: 0px 0px 4px 0px #ffffff; /* Android 2.3+, iOS 4.0.2-4.2, Safari 3-4 */
+    box-shadow: 0px 0px 4px 0px #ffffff; /* Chrome 6+, Firefox 4+, IE 9+, iOS 5+, Opera 10.50+ */
+    -webkit-tap-highlight-color: transparent;
+}
