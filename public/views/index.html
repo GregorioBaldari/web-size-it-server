@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Bootstrap theme -->
+<link rel="stylesheet" href="../libs/bootstrap/dist/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="../libs/bootstrap/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="../libs/angular-chart/angular-chart.min.js">    
+<link rel="stylesheet" type="text/css" href="../css/style.css"/>
+<head>
+    <title>WeSizeIT</title>
+</head>
+<body ng-app="weSizeItApp">
+<!-- Menu-->
+<!--    <div ng-show="user.authenticated">-->
+        <div ng-model="team" class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <nav class="navbar navbar-default navbar-fixed-top">
+                        <div class="container">
+                            <div class="navbar-header">
+                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                                    <span class="sr-only">Toggle navigation</span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                                <a class="navbar-brand" href="#play">WeSizeIT</a>
+                            </div>
+                            <div id="navbar" class="navbar-collapse collapse">
+                                <ul class="nav navbar-nav">
+                                    <li class="active"><a href="#play">Play</a></li>
+                                    <li><a href="#organize">Organize</a></li>
+                                </ul>
+                            </div><!--/.nav-collapse -->
+                        </div>
+                    </nav>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 4%;">
+                    <div class="col-md-12">        
+                        <div ng-view>
+                        </div>
+                    </div>
+            </div>
+        </div>
+<!--            <a href="#" ua-logout>Log Out</a>-->
+
+</body>
+    
+     <!-- Chart Library
+    ================================================== -->
+<!--
+    
+    <script src="../libs/chartjs/Chart.js"></script>
+    
+    <script src="../libs/chartjs/Chart.js"></script>
+    
+-->
+    
+     <!-- JQuery
+    ================================================== -->
+    <script src="../libs/jquery/dist/jquery.min.js"></script>
+    <script src="../libs/jquery-ui/jquery-ui.min.js"></script>
+    
+    <!-- Angular
+    ================================================== -->
+    <script src="../libs/angular/angular.min.js"></script>
+    <script src="../libs/angular-ui-bootstrap-bower/ui-bootstrap.min.js"></script>
+    <script src="../libs/angular-route/angular-route.min.js"></script>
+    <script src="../libs/angular-ng-pageslide/dist/angular-pageslide-directive.min.js"></script>
+    <script src="../libs/angular-sanitize/angular-sanitize.min.js"></script>
+    <script src="../staticLib/Chart.js"></script>
+    <script src="../staticLib/angular-chart.min.js"></script>
+    <script src="../libs/angular-ui-sortable/sortable.min.js"></script>
+    
+    <!-- User-App
+    ================================================== -->
+    <script src="../libs/userapp/userapp.client.js"></script>
+    <script src="../libs/userapp-angular/angularjs.userapp.js"></script>
+    
+    <!-- Bootstrap
+    ================================================== -->
+    <script src="../libs/bootstrap/dist/js/bootstrap.min.js"></script>  
+    
+    <script src="../js/core.js"></script>
+    <script src="../js/services/pbService.js"></script>
+    <script src="../js/controllers/MainCtrl.js"></script>
+    <script src="../js/controllers/PBsCtrl.js"></script>
+<!--
+    
+    <script src="js/controllers.js"></script>
+    <script src="js/storyPageController.js"></script> 
+    <script src="js/app.js"></script>
+    
+-->
+    <!-- SocketIO
+    ================================================== -->
+    <script src="../libs/sio-client/socket.io.js"></script>
+    
+</html>
