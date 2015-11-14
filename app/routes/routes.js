@@ -11,6 +11,7 @@ function getPBs(res) {
         if (err) {
             res.send(err);
         }
+        //console.log("Routes: PBs List updated");
         res.json(pbs); // return all todos in JSON format
     });
 };
@@ -33,6 +34,7 @@ module.exports = function (app) {
 		var pb = new PB({name: req.body.text});
         pb.save (function(err) {
             if (err) { res.send(err); }
+            //console.log("Routes: New PB Created");
             getPBs(res);
         });
 	});
@@ -44,7 +46,7 @@ module.exports = function (app) {
 		}, function (err, pb) {
 			if (err)
 				res.send(err);
-
+            //console.log("Routes: PB Removed");
 			getPBs(res);
 		});
 	});
@@ -56,12 +58,13 @@ module.exports = function (app) {
         }, function (err, pb) {
             if (err) {
                 res.send(err);
-                console.log("ERR: " + err)
+                //console.log("ERR: " + err)
             } else {
                 var pbItem = new UserStory({title : req.body.text});
                 pb.pbitems.push(pbItem);
                 pb.save(function (err) {
                     if(err) res.send(err);
+                    //console.log("Routes: New User Story Created");
                     getPBs(res);
                 })
             }
@@ -79,18 +82,20 @@ module.exports = function (app) {
                 pb.pbitems = req.body;
                 pb.save(function (err) {
                     if(err) res.send(err);
+                    //console.log("Routes: User Story Updated");
                     getPBs(res);
                 })
             };
         });
     });
 
- /*   
+//  
+//    app.get('/organize', function (req, res) {
+//		res.sendfile('./public/views/pbs.html'); // load the single view file (angular will handle the page changes on the front-end)
+//	});
+//    
     app.get('*', function (req, res) {
-		res.sendfile('./public/views/pbs.html'); // load the single view file (angular will handle the page changes on the front-end)
-	});
- */   
-    app.get('*', function (req, res) {
+        //console.log("Routes: Redirection to index");
 		res.sendfile('./public/views/index.html'); // load the single view file (angular will handle the page changes on the front-end)
 	});
 };

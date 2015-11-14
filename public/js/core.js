@@ -46,7 +46,7 @@ weSizeItApp.factory('socket', ['$rootScope', function ($rootScope) {
 }]);
 
 weSizeItApp.config(['$routeProvider', function($routeProvider) {
-    $routeProvider.
+    $routeProvider
 //    when('/login', {
 //        templateUrl: 'login.html', 
 //        public: true, 
@@ -60,15 +60,15 @@ weSizeItApp.config(['$routeProvider', function($routeProvider) {
 //        templateUrl: 'pbd.html',
 //        //controller: 'formulaBuilderCtrl'
 //    }).
-    when('/play', {
+    .when('/play', {
         templateUrl: 'views/play.html',
         controller: 'mainViewCtrl',
-    }).
-     when('/organize', {
-        templateUrl: 'views/organize.html',
+    })
+    .when('/organize', {
+        templateUrl: 'views/pbs.html',
         controller: 'mainController',
-    }).
-    otherwise({
+    })
+    .otherwise({
         redirectTo: '/play',
         controller: 'mainViewCtrl',
     });

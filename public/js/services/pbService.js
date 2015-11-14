@@ -3,8 +3,8 @@ angular.module('pbService', [])
 	// super simple service
 	// each function returns a promise object 
 	.factory('PBs', ['$http', function ($http) {
-		var currentPB;
-        var PSList;
+		var currentPB = {};
+        var PSList = {};
         return {     
             
 			get : function () {
@@ -30,7 +30,7 @@ angular.module('pbService', [])
             },
             
             getCurrentProductBacklog : function () {
-                return currentPB;
-            },
+               return currentPB;
+            }
 		};
 	}]);

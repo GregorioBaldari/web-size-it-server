@@ -29,42 +29,6 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function (callback) {
     console.log("Mongo Db connected");
-    
-//    var PBItemSchema2 = mongoose.Schema({
-//        title: String,
-//        narrative: String,
-//        acceptanceCriteria: String,
-//        size: Number,
-//        risk: Number,
-//        effort: Number,
-//        complexity: Number
-//    });
-//
-//var pbitems = mongoose.Schema({
-//        name: String
-//        //pbitems: [PBItemSchema2]
-//    });
-//var Temp2 = mongoose.model('PB2', pbitems);
-//
-//var temp2 = new Temp2({name: 'tempNAme'});
-//temp2.save(function (err) {
-//    if(err){} 
-//    else{ 
-//        console.log('saved in server.js')
-//    }
-//});    
-    /*
-    var PBSchema = mongoose.Schema({
-        name: String
-    });
-    var PBItem = mongoose.model('PBItem', PBSchema);
-    var OnePBItem = new PBItem({ name: 'Some Title' });
-    console.log(OnePBItem.name); // 'Silence
-    
-    OnePBItem.save(function (err, fluffy) {
-        if (err) return console.error(err);
-    });
-    */
 });
 
 
@@ -98,10 +62,6 @@ var websizeclient; //Store a reference tot eh webapplication client (the one tha
 //
 
 app.set('port', port);
-//app.use(express.static(__dirname + '/public'));
-//app.set('views',__dirname + '/views');
-//app.set('view engine', 'ejs');
-//app.engine('html', require('ejs').renderFile);
 
 // start app ===============================================
 server.listen(app.get('port'), function() {
