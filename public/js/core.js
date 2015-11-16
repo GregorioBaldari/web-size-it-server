@@ -3,7 +3,8 @@ var weSizeItApp = angular.module('weSizeItApp', [
     'chart.js',
     'pbService',
     'appControllers',
-    'pbController'
+    'pbController',
+    'UserApp' 
     ]);
 //'UserApp',
 
@@ -47,15 +48,15 @@ weSizeItApp.factory('socket', ['$rootScope', function ($rootScope) {
 
 weSizeItApp.config(['$routeProvider', function($routeProvider) {
     $routeProvider
-//    when('/login', {
-//        templateUrl: 'login.html', 
-//        public: true, 
-//        login: true,
-//    }).
-//    when('/signup', {
-//        templateUrl: 'signup.html', 
-//        public: true,
-//    }).
+    .when('/login', {
+        templateUrl: 'views/login.html', 
+        public: true, 
+        login: true,
+    })
+    .when('/signup', {
+        templateUrl: 'views/signup.html', 
+        public: true,
+    })
 //    when('/product-backlog', {
 //        templateUrl: 'pbd.html',
 //        //controller: 'formulaBuilderCtrl'
@@ -77,13 +78,13 @@ weSizeItApp.config(['$routeProvider', function($routeProvider) {
 
 //Please note that the btoa() function may not be supported by all browsers.
 //btoa() is used to autoriz the backend API
-//weSizeItApp.run(function($rootScope, user, $http) {
-//	user.init({ appId: '563f8a3e36901' });
-//    $rootScope.$on('user.login', function() {
-//        $http.defaults.headers.common.Authorization = 'Basic ' + btoa(':' + user.token());
-//        console.log('User Token: ' + user.token());
-//    });  
-//    $rootScope.$on('user.logout', function() {
-//        $http.defaults.headers.common.Authorization = null;
-//    });
-//});
+weSizeItApp.run(function($rootScope, user, $http) {
+	user.init({ appId: '563f8a3e36901' });
+    $rootScope.$on('user.login', function() {
+        $http.defaults.headers.common.Authorization = 'Basic ' + btoa(':' + user.token());
+        console.log('User Token: ' + user.token());
+    });  
+    $rootScope.$on('user.logout', function() {
+        $http.defaults.headers.common.Authorization = null;
+    });
+});
