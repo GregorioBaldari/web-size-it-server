@@ -16,11 +16,13 @@ angular.module('pbService', [])
                 return customer_id;
             },
             
+            //Get all the Prodcut Backlogs
 			get : function (customer_id) {
                 console.log("Going to retireve data for : " + customer_id);
 				return $http.get('/api/pbs/' + customer_id);
 			},
             
+            // Create a Product Backlog
 			create : function (customer_id, pbData) {
 				return $http.post('/api/pbs/' + customer_id ,pbData);
 			},
@@ -28,10 +30,12 @@ angular.module('pbService', [])
 				return $http.delete('/api/pbs/' + id);
 			},
             
+            // Create an User Story
             createPBItem : function (id, pbItemData) {
                 return $http.post('/api/pbs/addItem/' + id, pbItemData);
             },
             
+            // Save a User Story data
             save : function (id, pbItems) {
                 return $http.put('/api/pbs/updateItem/' + id, pbItems);
             },

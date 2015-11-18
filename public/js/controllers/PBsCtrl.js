@@ -133,8 +133,10 @@ angular.module('pbController', ['ui.sortable'])
             $scope.pbitems.forEach( function(value, index) {
                 value.rank = index;
             })
+             $scope.updateUserStory();
         }
         
+        //Called when the User Story data is saved in the form or the User Story is ordered
         $scope.updateUserStory = function() {
             PBs.save($scope.selectedPBId, $scope.pbitems)
                 // if successful creation, call our get function to get all the new pbs
