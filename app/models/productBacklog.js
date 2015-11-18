@@ -3,6 +3,7 @@ var UserStory = require('../models/productBacklogItem').schema;
 
 //Product Backlog Schema
 var PBSchema = mongoose.Schema({
+        customer_id : String,
         name: String,
         pbitems: [UserStory]
     });

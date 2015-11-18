@@ -4,14 +4,10 @@ var UserStory = require('../models/productBacklogItem');
 
 //in the comment pb == productbacklog
 
-function getPBs(res) {
-	PB.find(function (err, pbs) {
-
-		// if there is an error retrieving, send the error. nothing after res.send(err) will execute
-        if (err) {
-            res.send(err);
-        }
-        //console.log("Routes: PBs List updated");
+function getPBs(req, res) {
+    console.log("Seraching for customer: " + "rO3JSsSfQJOiNpsQd4melg");
+    PB.find({'customer_id': "rO3JSsSfQJOiNpsQd4melg"}, function (err, pbs) {
+        if (err) res.send(err);
         res.json(pbs); // return all todos in JSON format
     });
 };
@@ -21,21 +17,28 @@ module.exports = function (app) {
 
 	// api ---------------------------------------------------------------------
 	// get all todos
-	app.get('/api/pbs', function (req, res) {
-
-		// use mongoose to get all pbs in the database
-		getPBs(res);
+	app.get('/api/pbs/:customer_id', function (req, res) {
+        console.log("Seraching for customer: " + req.params.customer_id);
+		PB.find({'customer_id': req.params.customer_id}, function (err, pbs) {
+        if (err) res.send(err);
+        res.json(pbs); // return all todos in JSON format
+    });
+        // use mongoose to get all pbs in the database
+		//getPBs(req, res);
 	});
 
 	// create pb and send back all pbs after creation
-	app.post('/api/pbs', function (req, res) {
+	app.post('/api/pbs/:customer_id', function (req, res) {
 
 		// create a todo, information comes from AJAX request from Angular
-		var pb = new PB({name: req.body.text});
+		var pb = new PB({customer_id: req.params.customer_id, name: req.body.name});
         pb.save (function(err) {
             if (err) { res.send(err); }
             //console.log("Routes: New PB Created");
-            getPBs(res);
+            PB.find({'customer_id': req.params.customer_id}, function (err, pbs) {
+                if (err) res.send(err);
+                res.json(pbs); // return all todos in JSON format
+            });
         });
 	});
 

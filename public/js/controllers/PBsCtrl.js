@@ -9,12 +9,13 @@ angular.module('pbController', ['ui.sortable'])
         $scope.selectedPBId = "";
         $scope.pbitems = {};
         $scope.pbitem ={}
-        
+        $scope.customer_id = PBs.getCustomerId();
+        $scope.pb ={};
 
 		// GET =====================================================================
 		// when landing on the page, get all todos and show them
 		// use the service to get all the todos
-		PBs.get()
+		PBs.get($scope.customer_id)
 			.success(function (data) {
 				$scope.pbs = data;
 				$scope.loading = false;
@@ -25,11 +26,10 @@ angular.module('pbController', ['ui.sortable'])
 
 			// validate the formData to make sure that something is there
 			// if form is empty, nothing will happen
-			if ($scope.formData.text != undefined) {
-				$scope.loading = true;
-
+			if ($scope.formData.name != undefined) {
+				//$scope.formData.customer_id = $scope.customer_id;
 				// call the create function from our service (returns a promise object)
-				PBs.create($scope.formData)
+				PBs.create($scope.customer_id, $scope.formData)
 
 					// if successful creation, call our get function to get all the new todos
 					.success(function (data) {

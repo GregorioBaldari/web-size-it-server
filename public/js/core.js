@@ -8,6 +8,8 @@ var weSizeItApp = angular.module('weSizeItApp', [
     ]);
 //'UserApp',
 
+var user_id ="";
+
 weSizeItApp.factory('socket', ['$rootScope', function ($rootScope) {
     //The following namespace is used on server side.
     //TO DO
@@ -67,7 +69,7 @@ weSizeItApp.config(['$routeProvider', function($routeProvider) {
     })
     .when('/organize', {
         templateUrl: 'views/pbs.html',
-        controller: 'mainController',
+        //controller: 'mainController',
     })
     .otherwise({
         redirectTo: '/play',
@@ -78,13 +80,20 @@ weSizeItApp.config(['$routeProvider', function($routeProvider) {
 
 //Please note that the btoa() function may not be supported by all browsers.
 //btoa() is used to autoriz the backend API
-weSizeItApp.run(function($rootScope, user, $http) {
+weSizeItApp.run(function($rootScope, user, $http, PBs) {
 	user.init({ appId: '563f8a3e36901' });
     $rootScope.$on('user.login', function() {
         $http.defaults.headers.common.Authorization = 'Basic ' + btoa(':' + user.token());
         console.log('User Token: ' + user.token());
+        user.getCurrent().then(function(currentUser) {
+            //Store user_id for reference in MongoDB call
+            PBs.setCustomerId(currentUser.user_id);
+            //console.log('User ID: ' + PBs.getCustomerId());
+        });
     });  
     $rootScope.$on('user.logout', function() {
         $http.defaults.headers.common.Authorization = null;
+        // Clean user_id
+        user_id = "";
     });
 });
