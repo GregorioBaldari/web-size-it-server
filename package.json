@@ -27,11 +27,17 @@
     
     "homepage" : "https://github.com/GregorioBaldari/web-size-it-server#readme",
     "dependencies" : {
-        "express" : "^4.13.3",
-        "ejs": "~1.0.0",
-        "mongoose" : "~3.8.0",
-        "body-parser" : "~1.4.2",
-        "method-override" : "~2.0.2",
-        "socket.io" : "1.3.7"
+        "express"           : "^4.13.3",
+        "express-logger"    : "0.0.3",
+        "cookie-parser"     : "1.4.0",
+        "express-session"   : "1.12.1",
+        "connect-flash"     :"0.1.x",
+        "ejs"               : "~1.0.0",
+        "mongoose"          : "~3.8.0",
+        "body-parser"       : "~1.4.2",
+        "method-override"   : "~2.0.2",
+        "socket.io"         : "1.3.7",
+        "passport"          :">= 0.0.0",
+        "passport-userapp"  :">= 0.2.0"
     }
 }

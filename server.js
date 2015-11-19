@@ -1,9 +1,16 @@
 // modules =================================================
-var express = require('express');
-var app = express();
-var bodyParser     = require('body-parser');
-var methodOverride = require('method-override');
-var mongoose = require('mongoose');
+var express         = require('express'),
+    logger          = require('express-logger'),
+    cookieParser    = require('cookie-parser'),
+    session         = require('express-session')
+    http            = require('http'),
+    passport        = require('passport'),
+    flash           = require('connect-flash'),
+    UserAppStrategy = require('passport-userapp').Strategy,
+    bodyParser      = require('body-parser'),
+    methodOverride  = require('method-override'),
+    mongoose        = require('mongoose'),
+    app = express();
 
 // configuration ===========================================
     
@@ -12,11 +19,69 @@ var mongoose = require('mongoose');
 // set our port
 var port = process.env.PORT || 3000;
 
-;
+// Passport session setup
+passport.serializeUser(function (user, done) {
+    done(null, user.username);
+});
+
+passport.deserializeUser(function (username, done) {
+    var user = _.find(users, function (user) {
+        return user.username == username;
+    });
+    if (user === undefined) {
+        done(new Error('No user with username "' + username + '" found.'));
+    } else {
+        done(null, user);
+    }
+});
+
+// Use the UserAppStrategy within Passport
+passport.use(
+    new UserAppStrategy({
+        appId: '563f8a3e36901' // Your UserApp App Id: https://help.userapp.io/customer/portal/articles/1322336-how-do-i-find-my-app-id-
+    },
+    function (userprofile, done) {
+        process.nextTick(function () {
+            var exists = _.any(users, function (user) {
+                //Retrieve user from Mongo
+                return;
+                //return user.id == userprofile.id;
+            });
+            
+            if (!exists) {
+                //Create user on MongoDB
+                //users.push(userprofile);
+            }
+
+            return done(null, userprofile);
+        });
+    }
+));
+
+// Configure Express ===========================================
+app.set('port', port);
+app.use(cookieParser());
+app.use(session({ secret: 'secret' }));
+app.use(flash());
+
+app.use(bodyParser.json());
+// Parse application/vnd.api+json as json
+//app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
+
+// Parse application/x-www-form-urlencoded
+//app.use(bodyParser.urlencoded({ extended: true })); 
+
+// override with the X-HTTP-Method-Override header in the request. simulate DELETE/PUT
+app.use(methodOverride('X-HTTP-Method-Override')); 
+
+// Initialize Passport
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(express.static(__dirname + '/public'));
 
 // Data Base Stuff ===========================================
 
-// config files
+// Config files
 var options = { server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } }, 
                 replset: { socketOptions: { keepAlive: 1, connectTimeoutMS : 30000 } } };       
 
@@ -28,40 +93,24 @@ mongoose.connect(dbCong.url, options);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function (callback) {
-    console.log("Mongo Db connected");
+    console.log("Mongo Db is connected");
 });
 
 
-
-// get all data/stuff of the body (POST) parameters
-// parse application/json 
-app.use(bodyParser.json()); 
-
-// parse application/vnd.api+json as json
-app.use(bodyParser.json({ type: 'application/vnd.api+json' })); 
-
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true })); 
-
-// override with the X-HTTP-Method-Override header in the request. simulate DELETE/PUT
-app.use(methodOverride('X-HTTP-Method-Override')); 
-
-// set the static files location /public/img will be /img for users
-app.use(express.static(__dirname + '/public'));
+//
+//// get all data/stuff of the body (POST) parameters
+//// parse application/json 
+//app.use(bodyParser.json()); 
 
 // routes ==================================================
 require('./app/routes/routes')(app);
 
+app.use(logger({path: "./log/logfile.txt"}));
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var team = []; //Store a list of (mobile)client
 var websizeclient; //Store a reference tot eh webapplication client (the one that receive sizes)
 
-//
-//server.listen(port);
-//
-
-app.set('port', port);
 
 // start app ===============================================
 server.listen(app.get('port'), function() {
