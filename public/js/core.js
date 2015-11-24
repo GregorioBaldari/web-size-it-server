@@ -17,8 +17,8 @@ weSizeItApp.factory('socket', ['$rootScope', function ($rootScope) {
     //var projectSpace = 'projectSpace';
     //var socket = io('https://secret-lake-6472.herokuapp.com/' + projectSpace);
     //var socket = io('http://localhost:3000/' + projectSpace);
-    var socket = io('https://wesizeit.herokuapp.com');
-    //var socket = io('http://localhost:3000');
+    //var socket = io('https://wesizeit.herokuapp.com');
+    var socket = io('http://localhost:3000');
     return {
         on: function (eventName, callback) {
             function wrapper() {
@@ -52,7 +52,7 @@ weSizeItApp.config(['$routeProvider', function($routeProvider) {
     $routeProvider
     .when('/login', {
         templateUrl: 'views/login.html', 
-        public: true, 
+        public: true,
         login: true,
     })
     .when('/signup', {
@@ -77,7 +77,7 @@ weSizeItApp.config(['$routeProvider', function($routeProvider) {
     });
 }]);
 
-
+//This stuff is for login
 //Please note that the btoa() function may not be supported by all browsers.
 //btoa() is used to autoriz the backend API
 weSizeItApp.run(function($rootScope, user, $http, PBs) {
@@ -87,7 +87,13 @@ weSizeItApp.run(function($rootScope, user, $http, PBs) {
         console.log('User Token: ' + user.token());
         user.getCurrent().then(function(currentUser) {
             //Store user_id for reference in MongoDB call
-            PBs.setCustomerId(currentUser.user_id);
+            PBs.saveCustomer(currentUser.user_id)
+            .success(function (user) {
+                    console.log('Team Member Saved: ' + user);
+                    PBs.setCustomerId(user.customer_id);
+                    PBs.setCustomerRoom(user.room);
+                });
+            //PBs.setCustomerId(currentUser.user_id);
             //console.log('User ID: ' + PBs.getCustomerId());
         });
     });  

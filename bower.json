@@ -2,7 +2,7 @@
   "name": "starter-node-angular",
   "version" : "1.0.0",
   "dependencies" : {
-      "bootstrap" : "latest",
+        "bootstrap" : "latest",
         "jquery" : "latest",
         "jquery-ui" : "latest",
         "font-awesome": "latest",

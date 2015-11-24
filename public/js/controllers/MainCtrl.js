@@ -1,23 +1,15 @@
 'use strict';
 
-var appControllers = angular.module('appControllers', ['ngRoute','chart.js']);
+var appControllers = angular.module('appControllers', ['ngRoute','chart.js','UserApp']);
 
 //Main View Controller
-appControllers.controller('mainViewCtrl', ['$scope', 'socket','PBs', function ($scope, socket, PBs) {
+appControllers.controller('mainViewCtrl', ['$scope', 'socket','PBs','UserApp', function ($scope, socket, PBs, user) {
     'use strict';
     var team = [];
     $scope.team = team;
     $scope.stories = PBs.getCurrentProductBacklog().pbitems;
    
-    //Chart Radar vlaue and options
-    /*
-    $scope.labels =["Eating", "Drinking", "Sleeping", "Designing", "Coding", "Cycling", "Running"];
-
-    $scope.data = [
-        [65, 59, 90, 81, 56, 55, 40],
-        [28, 48, 40, 19, 96, 27, 100]
-    ];
-    */ 
+    $scope.room ={};
     $scope.labels = [];
     $scope.series = ['Risk', 'Complexity', 'Effort'];
     $scope.data = [ [], [], [] ];
@@ -57,7 +49,9 @@ appControllers.controller('mainViewCtrl', ['$scope', 'socket','PBs', function ($
     
     
     //Communicate to the server that this app is the client running on desktop
-    socket.emit('client-connection');
+    socket.emit('client-connection','gregRoom', function(data){
+        console.log(data);
+    });
     //Capture sizes sent by the server
     
     /*
@@ -67,13 +61,14 @@ appControllers.controller('mainViewCtrl', ['$scope', 'socket','PBs', function ($
         console.log('Memebers number is: ' + team.length);
     });
     */
+
     socket.on('newData', function (data) {
         console.log(data.userName + ' updated size: ' + data.size);
-        /*
+        
         if ($scope.team[data.userId] === undefined) {
             team.push(data.userId);
         }
-        */
+        
         team[data.userId] = data;
         $scope.team = team;
         console.log('Team memebers number is: ' + team.length);
@@ -319,21 +314,13 @@ appControllers.controller('mainViewCtrl', ['$scope', 'socket','PBs', function ($
         $scope.loading = false;
     };
 
+    $scope.updateRoomDetails = function () {
+        PBs.saveRoomDetails(PBs.getCustomerId(), $scope.room)
+        .success(function () {
+                    socket.emit('client-connection','gregRoom', function(data){
+                        console.log('Room detailed saved');
+                    });
+                });
+    }
 
 }]);
-//
-////Stories View Controller NOT IN USE
-//appControllers.controller('storiesViewCtrl', ['$scope', 'socket', function ($scope, socket) {
-//
-//
-//}]);
-//
-////Main Option Controller NOT IN USE
-//appControllers.controller('mainOptionsCtrl', ['$scope', 'socket', function ($scope, socket) {
-//    //Open or close the Story View
-//    $scope.toggle = function(){
-//        $scope.checked = !$scope.checked;
-//        console.log('Open Story view page opened');
-//    };
-//
-//}]);

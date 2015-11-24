@@ -10,26 +10,30 @@ var express         = require('express'),
     bodyParser      = require('body-parser'),
     methodOverride  = require('method-override'),
     mongoose        = require('mongoose'),
+    _               = require('underscore'),
     app = express();
 
 // configuration ===========================================
-    
 
+//Local Storage for Users
+var users = [];
 
 // set our port
 var port = process.env.PORT || 3000;
 
 // Passport session setup
 passport.serializeUser(function (user, done) {
-    done(null, user.username);
+    console.log('Serializing User with Passport');
+    done(null, user.email);
 });
 
-passport.deserializeUser(function (username, done) {
+passport.deserializeUser(function (email, done) {
+    console.log('Deserializing User Passport');
     var user = _.find(users, function (user) {
-        return user.username == username;
+        return user.email == email;
     });
     if (user === undefined) {
-        done(new Error('No user with username "' + username + '" found.'));
+        done(new Error('No user with email "' + email + '" found.'));
     } else {
         done(null, user);
     }
@@ -41,16 +45,15 @@ passport.use(
         appId: '563f8a3e36901' // Your UserApp App Id: https://help.userapp.io/customer/portal/articles/1322336-how-do-i-find-my-app-id-
     },
     function (userprofile, done) {
+        console.log('*************************************');
+        console.log('Registering User in Node');
         process.nextTick(function () {
             var exists = _.any(users, function (user) {
-                //Retrieve user from Mongo
-                return;
-                //return user.id == userprofile.id;
+                return user.id == userprofile.id;
             });
             
             if (!exists) {
-                //Create user on MongoDB
-                //users.push(userprofile);
+                users.push(userprofile);
             }
 
             return done(null, userprofile);
@@ -61,7 +64,7 @@ passport.use(
 // Configure Express ===========================================
 app.set('port', port);
 app.use(cookieParser());
-app.use(session({ secret: 'secret' }));
+app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }));
 app.use(flash());
 
 app.use(bodyParser.json());
@@ -128,13 +131,16 @@ server.listen(app.get('port'), function() {
 
 io.on('connection', function (socket) {
     team.push(socket);
-    console.log('Another application is connected');
-    console.log('Connected applications are: ' + team.length);
+    console.log('SOCKET');
+    console.log('Connection Request from socket: ' + socket.id);
+    //console.log('Connected applications are: ' + team.length);
     
     //On updateModel event sent by the application get the data and send to the web app for visualization
+    // NOw client send message direactly to Desktop Application
     socket.on('updateModel', function(data){
+        console.log('SOCKET');
         console.log('Riceived an Update from ' + data.userName);
-        socket.broadcast.emit('newData', {
+        socket.broadcast.to(socket.room).emit('newData', {
             risk: data.risk,
             effort: data.effort,
             complexity: data.complexity,
@@ -143,15 +149,26 @@ io.on('connection', function (socket) {
             userName: data.userName,
             userId: team.indexOf(socket)
         });
-        console.log('Emitted Size: ' + data.size + ' from UserID: ' + team.indexOf(socket) + ' with UserName: ' + data.userName);
+        console.log('Emitted Size: ' + data.size + ' User: ' + data.userName);
     })
     
+    socket.on('joiningRoom', function(userData,fn){
+        console.log('SOCKET');
+        console.log('Socket: ' + socket.id + ':Joining Room: ' + userData.room);
+        //To be sure the client is not in any more room
+        socket.leave(socket.room);
+        socket.room = userData.room;
+        socket.join(userData.room);
+        fn(true);
+    });
     //When Mobile app send 'disconnect' event, remove the client from the team array
     //If it's not in team array ( team.indexOf(socket) == -1) this means that the Client is disconnected!
     socket.on('disconnect', function() {
+        console.log('SOCKET');
+        console.log('Socket: ' + socket.id + ':Disconnetion');
         if(team.indexOf(socket) == -1){
-            console.log('*****Desktop App is disconnected*****');
-            websizeclient = undefined;
+            console.log('It was the a desktop app');
+            //websizeclient = undefined;
         } else{
             console.log('*****Mobile App user disconnected****');
             console.log('User index: ' + team.indexOf(socket));
@@ -165,14 +182,18 @@ io.on('connection', function (socket) {
     });
     
     //When Client send 'client-connection' event, remove the client from the team array and store it in websizeclient variable.
-    socket.on('client-connection', function(){
+    socket.on('client-connection', function(data){
         console.log('*****Client application connected******');
+        console.log('*****Room :' + data);
         team.splice(team.indexOf(socket), 1);
-        websizeclient = socket;
+        socket.leave(socket.room);
+        socket.room = data;
+        socket.join(data);
+        //console.log('Room on Server are: ' + server.sockets.manager.rooms);
+        //websizeclient = socket;
         console.log('At the moment the connected applications are: ' + team.length);
         console.log('*************************************');
-    });
-    
+    });  
     
 });
 
