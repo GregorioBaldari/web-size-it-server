@@ -10,47 +10,49 @@ var express         = require('express'),
     bodyParser      = require('body-parser'),
     methodOverride  = require('method-override'),
     mongoose        = require('mongoose'),
-    app = express();
+    _               = require('underscore'),
+    app             = express();
 
 // configuration ===========================================
-    
 
+//Local Storage for Users
+var users = [];
 
 // set our port
 var port = process.env.PORT || 3000;
 
 // Passport session setup
 passport.serializeUser(function (user, done) {
-    done(null, user.username);
+    console.log('**PASSPORT**');
+    console.log('Serializing User');
+    done(null, user.email);
 });
 
-passport.deserializeUser(function (username, done) {
+passport.deserializeUser(function (email, done) {
+    console.log('**PASSPORT**');
+    console.log('Deserializing User');
     var user = _.find(users, function (user) {
-        return user.username == username;
+        return user.email == email;
     });
     if (user === undefined) {
-        done(new Error('No user with username "' + username + '" found.'));
+        done(new Error('No user with email "' + email + '" found.'));
     } else {
         done(null, user);
     }
 });
 
 // Use the UserAppStrategy within Passport
-passport.use(
-    new UserAppStrategy({
-        appId: '563f8a3e36901' // Your UserApp App Id: https://help.userapp.io/customer/portal/articles/1322336-how-do-i-find-my-app-id-
-    },
+passport.use( new UserAppStrategy({ appId: '563f8a3e36901'},
     function (userprofile, done) {
+        console.log('**PASSPORT**');
+        console.log('Registering User in Node');
         process.nextTick(function () {
             var exists = _.any(users, function (user) {
-                //Retrieve user from Mongo
-                return;
-                //return user.id == userprofile.id;
+                return user.id == userprofile.id;
             });
             
             if (!exists) {
-                //Create user on MongoDB
-                //users.push(userprofile);
+                users.push(userprofile);
             }
 
             return done(null, userprofile);
@@ -61,17 +63,9 @@ passport.use(
 // Configure Express ===========================================
 app.set('port', port);
 app.use(cookieParser());
-app.use(session({ secret: 'secret' }));
+app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }));
 app.use(flash());
-
 app.use(bodyParser.json());
-// Parse application/vnd.api+json as json
-//app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
-
-// Parse application/x-www-form-urlencoded
-//app.use(bodyParser.urlencoded({ extended: true })); 
-
-// override with the X-HTTP-Method-Override header in the request. simulate DELETE/PUT
 app.use(methodOverride('X-HTTP-Method-Override')); 
 
 // Initialize Passport
@@ -93,6 +87,7 @@ mongoose.connect(dbCong.url, options);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function (callback) {
+    console.log("**MONGODB**");
     console.log("Mongo Db is connected");
 });
 
@@ -108,71 +103,79 @@ require('./app/routes/routes')(app);
 app.use(logger({path: "./log/logfile.txt"}));
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
-var team = []; //Store a list of (mobile)client
+//var team = []; //Store a list of (mobile)client
 var websizeclient; //Store a reference tot eh webapplication client (the one that receive sizes)
 
 
 // start app ===============================================
 server.listen(app.get('port'), function() {
-  console.log('Node app is running on port', app.get('port'));
+    console.log("**NODE**");
+    console.log('Running on port', app.get('port'));
 });
 
-//Project Space.
-//TO DO
-// Let User Create Name Space
-// Let mmobile app link to created Name Space
-//Commented becouse it works on local but not on remote
-//var nsp = io.of('/projectSpace');
-// io.on('connection', function (socket) {
-
-
 io.on('connection', function (socket) {
-    team.push(socket);
-    console.log('Another application is connected');
-    console.log('Connected applications are: ' + team.length);
-    
+    //team.push(socket);
+    console.log('**SOCKET**');
+    console.log('ID: ' + socket.id + ':Connetion');
+    console.log('In room: ' + socket.room);
+    socket.type = 'Mobile App';
     //On updateModel event sent by the application get the data and send to the web app for visualization
+    // NOw client send message direactly to Desktop Application
     socket.on('updateModel', function(data){
+        console.log('**SOCKET**');
+        console.log('ID: ' + socket.id);
         console.log('Riceived an Update from ' + data.userName);
-        socket.broadcast.emit('newData', {
+        console.log('In Room ' + socket.room);
+        socket.broadcast.to(socket.room).emit('newData', {
             risk: data.risk,
             effort: data.effort,
             complexity: data.complexity,
             size: data.size,
             connected: data.connected,
             userName: data.userName,
-            userId: team.indexOf(socket)
+            userId: socket.id
         });
-        console.log('Emitted Size: ' + data.size + ' from UserID: ' + team.indexOf(socket) + ' with UserName: ' + data.userName);
+        console.log('Emitted Size: ' + data.size);
     })
     
+    socket.on('joiningRoom', function(userData,fn){
+        console.log('**SOCKET**');
+        console.log('ID: ' + socket.id)
+        console.log('Joining Room: ' + userData.room);
+        //To be sure the client is not in any more room
+        socket.leave(socket.room);
+        socket.room = userData.room;
+        socket.join(userData.room);
+        fn(true);
+    });
     //When Mobile app send 'disconnect' event, remove the client from the team array
     //If it's not in team array ( team.indexOf(socket) == -1) this means that the Client is disconnected!
     socket.on('disconnect', function() {
-        if(team.indexOf(socket) == -1){
-            console.log('*****Desktop App is disconnected*****');
-            websizeclient = undefined;
-        } else{
-            console.log('*****Mobile App user disconnected****');
-            console.log('User index: ' + team.indexOf(socket));
-            console.log('User username: ' + team.indexOf(socket).userName);
-            console.log('*************************************');
-            socket.broadcast.emit('userDisconnection', {
-                userId: team.indexOf(socket)
+        console.log('**SOCKET**');
+        console.log('ID: ' + socket.id + ':Disconnetion');
+        if (socket.type === 'Desktop App') {
+            socket.broadcast.emit('clientDisconnection', {
+                userId: socket.id
             });
-            team.splice(team.indexOf(socket), 1);
+            console.log('Other Mobile App notified in room: ' + socket.room);
+        } else {
+            socket.broadcast.emit('userDisconnection', {
+                userId: socket.id
+            });
+            console.log('Client App notified in room: ' + socket.room);
         }
     });
     
     //When Client send 'client-connection' event, remove the client from the team array and store it in websizeclient variable.
-    socket.on('client-connection', function(){
-        console.log('*****Client application connected******');
-        team.splice(team.indexOf(socket), 1);
-        websizeclient = socket;
-        console.log('At the moment the connected applications are: ' + team.length);
-        console.log('*************************************');
-    });
-    
+    socket.on('client-connection', function(data){
+        console.log('**SOCKET**');
+        console.log('ID: ' + socket.id + ':Client application');
+        console.log('In Room :' + data);
+        socket.type = 'Desktop App';
+        socket.leave(socket.room);
+        socket.room = data;
+        socket.join(data);
+    });  
     
 });
 

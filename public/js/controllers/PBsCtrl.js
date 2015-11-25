@@ -1,32 +1,46 @@
 angular.module('pbController', ['ui.sortable'])
 
 	// inject the Todo service factory into our controller
-	.controller('mainController', ['$scope','$filter','$http','PBs', function($scope, $filter, $http, PBs) {
+	.controller('mainController', ['$scope', '$filter', 'PBs', 'UserService', function ($scope, $filter, PBs, UserService) {
 		$scope.formData = {};
-        $scope.formPBItemData = {}
+        $scope.formPBItemData = {};
 		$scope.loading = true;
         $scope.pbs = {};
         $scope.selectedPBId = "";
         $scope.pbitems = {};
-        $scope.pbitem ={}
-        $scope.customer_id = PBs.getCustomerId();
-        $scope.pb ={};
+        $scope.pbitem = {};
+        $scope.customer_id = "";
+        $scope.pb = {};
+        $scope.teamMember = {};
+        $scope.team =[];
 
-		// GET =====================================================================
-		// when landing on the page, get all todos and show them
-		// use the service to get all the todos
-		PBs.get($scope.customer_id)
-			.success(function (data) {
-				$scope.pbs = data;
-				$scope.loading = false;
-			});
-
+		
+         $scope.$watch( 
+        function () { 
+            return UserService.getUser();
+        },
+        function (value) {
+            if (value !== {}) {
+                $scope.customer_id = value.customer_id;
+                PBs.get($scope.customer_id)
+                    .success(function (data) {
+                        $scope.pbs = data;
+                        $scope.loading = false;
+                        PBs.loadTeam($scope.customer_id)
+                        .success(function (data) {
+                            $scope.team = data.team;    
+                        });
+                    });
+            }
+        }, true
+        );
+        
 		// CREATE A NEW PRODUCT BACKLOG ==================================================================
 		$scope.createPb = function () {
 
 			// validate the formData to make sure that something is there
 			// if form is empty, nothing will happen
-			if ($scope.formData.name != undefined) {
+			if ($scope.formData.name !== undefined) {
 				//$scope.formData.customer_id = $scope.customer_id;
 				// call the create function from our service (returns a promise object)
 				PBs.create($scope.customer_id, $scope.formData)
@@ -45,7 +59,7 @@ angular.module('pbController', ['ui.sortable'])
 
 			// validate the formData to make sure that something is there
 			// if form is empty, nothing will happen
-			if ($scope.formPBItemData != undefined && $scope.selectedPBId !=undefined) {
+			if ($scope.formPBItemData !== undefined && $scope.selectedPBId !== undefined) {
 				$scope.loading = true;
 
 				// call the create function from our service (returns a promise object)
@@ -78,43 +92,43 @@ angular.module('pbController', ['ui.sortable'])
 		};
         
         // UPDATE USER STORY ==================================================================
-        $scope.updateUserStory = function (){
+        $scope.updateUserStory = function () {
             console.log($scope.pbitems[$scope.selectedPBId]);
         };
         
        // SORT USER STORY ==================================================================    
         $scope.sortableOptions = {  
-            activate: function() {
+            activate: function () {
                 //console.log("activate");
             },
-            beforeStop: function() {
+            beforeStop: function () {
                 //console.log("beforeStop");
             },
-            change: function() {
+            change: function () {
                 console.log("change");
             },
-            create: function() {
+            create: function () {
                 //console.log("create");
             },
             deactivate: function() {
                 //console.log("deactivate");
             },
-            out: function() {
+            out: function () {
                 //console.log("out");
             },
-            over: function() {
+            over: function () {
                 //console.log("over");
             },
-            receive: function() {
+            receive: function () {
                 //console.log("receive");
             },
-            remove: function() {
+            remove: function () {
                 //console.log("remove");
             },
-            sort: function() {
+            sort: function () {
                 //console.log("sort");
             },
-            start: function() {
+            start: function () {
                 //console.log("start");
             },
             update: function(e, ui) {
@@ -132,8 +146,8 @@ angular.module('pbController', ['ui.sortable'])
         $scope.updateUserStoryOrder = function () {
             $scope.pbitems.forEach( function(value, index) {
                 value.rank = index;
-            })
-             $scope.updateUserStory();
+            });
+            $scope.updateUserStory();
         }
         
         //Called when the User Story data is saved in the form or the User Story is ordered
@@ -141,8 +155,20 @@ angular.module('pbController', ['ui.sortable'])
             PBs.save($scope.selectedPBId, $scope.pbitems)
                 // if successful creation, call our get function to get all the new pbs
                 .success(function (data) {
-                    console.log('User Story List Order Saved')
+                    console.log('User Story List Order Saved');
                 });
         }
         
+        // CREATE A TEAM MEMBER================================================================== 
+        $scope.saveTeamMember = function () {
+            if ($scope.teamMember !== "") {
+                // We should check if the email already exist in team array!
+                $scope.team.push($scope.teamMember);
+                PBs.saveTeamMember($scope.customer_id, $scope.teamMember)
+                    .success(function (data) {
+                    console.log('Team Member Saved: ' + data);
+                    $scope.teamMember = {};
+                });
+            }
+        };
 	}]);

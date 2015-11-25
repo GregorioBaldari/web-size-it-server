@@ -1,7 +1,7 @@
 <div class="container appContainer" ng-controller="mainController" ng-show="user.authenticated">
     <div class="row">
 <!--        PB LIST -->
-        <div class="col-sm-3">
+        <div class="col-sm-2">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">Product Backlogs</h3>
@@ -30,7 +30,7 @@
             </div>
         </div>
 <!--        USER STORY LIST -->
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">User Story List</h3>
@@ -109,5 +109,35 @@
                 </form> 
             </div>
         </div>
+<!--        Team DETAILS -->
+<!--
+        <div class="col-sm-2">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Team Members</h3>
+                </div>
+                <div id="pb-form" class="row">
+                    <div class="col-sm-8 text-center" style="width: 100%">
+                        <form>
+                            <div class="form-group">
+                                <input type="text" class="form-control input-lg text-center" placeholder="New Member" ng-model="teamMember.email">
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%" ng-click="saveTeamMember()">Add</button>
+                        </form>
+                    </div>
+                </div>
+                <div id="teamMember-list" class="row">
+                    <div class="col-sm-4 col-sm-offset-4 productBacklogList">
+                        <div class="btn-group-vertical productBacklogList" role="group" aria-label="...">
+                            <button type="button" class="btn btn-default" style="text-align: left"  ng-repeat="member in team">{{ member.email }}</button>
+                        </div>
+                        <p class="text-center" ng-show="loading">
+                            <span class="fa fa-spinner fa-spin fa-3x"></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+-->
     </div>
 </div>
