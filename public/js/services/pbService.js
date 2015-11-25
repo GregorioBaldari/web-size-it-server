@@ -4,26 +4,8 @@ angular.module('pbService', [])
 	// each function returns a promise object 
 	.factory('PBs', ['$http', function ($http) {
 		var currentPB = {};
-        var customer_id;
-        var customerRoom = "gregRoom"; //for now harcoded. Need to do programaticaly soon after login
         var PSList = {};
-        return {  
-            
-            setCustomerId : function (id) {
-                customer_id = id;
-            },
-            
-            getCustomerId : function () {
-                return customer_id;
-            },
-            
-            setCustomerRoom : function (roomName) {
-                customerRoom = roomName;
-            },
-            
-            getCustomerRoom : function () {
-                return customerRoom;
-            },
+        return {              
             
             //Get all the Prodcut Backlogs
 			get : function (customer_id) {
@@ -60,7 +42,7 @@ angular.module('pbService', [])
             //Called on login handler in core.js
             saveCustomer : function (id) {
                 //Adding this to fix a bug when you refresh from play view
-                customer_id = id;
+                //customer_id = id;
                 console.log("In SaveCustomer Service with data: " + id);
                 return $http.get('/api/user/' + id);
             },
@@ -76,9 +58,9 @@ angular.module('pbService', [])
                 return $http.post('/api/user/saveTeamMember/' + id, teamMember)
             },
             
-            saveRoomDetails : function (id, roomDetails) {
-                console.log("In SaveRoomDetails Service with data: " + id);
-                return $http.post('/api/user/saveRoom/' + id, roomDetails);
+            saveRoomDetails : function (customer_id, roomDetails) {
+                console.log("In SaveRoomDetails Service with data: " + customer_id);
+                return $http.post('/api/user/saveRoom/' + customer_id, roomDetails);
             }
 		};
 	}]);

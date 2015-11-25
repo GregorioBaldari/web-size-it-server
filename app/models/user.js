@@ -7,7 +7,7 @@ var findOrCreate = require('mongoose-findorcreate');
 var UserSchema = mongoose.Schema({
         customer_id : String,
         room_id: String,
-        room_password: String,
+        room_key: String,
         name: String,
         email: String,
         team: [TeamMember]

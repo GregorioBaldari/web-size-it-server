@@ -1,7 +1,7 @@
 angular.module('pbController', ['ui.sortable'])
 
 	// inject the Todo service factory into our controller
-	.controller('mainController', ['$scope', '$filter', '$http', 'PBs', function ($scope, $filter, $http, PBs) {
+	.controller('mainController', ['$scope', '$filter', 'PBs', 'UserService', function ($scope, $filter, PBs, UserService) {
 		$scope.formData = {};
         $scope.formPBItemData = {};
 		$scope.loading = true;
@@ -9,24 +9,31 @@ angular.module('pbController', ['ui.sortable'])
         $scope.selectedPBId = "";
         $scope.pbitems = {};
         $scope.pbitem = {};
-        $scope.customer_id = PBs.getCustomerId();
+        $scope.customer_id = "";
         $scope.pb = {};
         $scope.teamMember = {};
         $scope.team =[];
 
-		// GET =====================================================================
-		// when landing on the page, get all todos and show them
-		// use the service to get all the todos
-		PBs.get($scope.customer_id)
-			.success(function (data) {
-				$scope.pbs = data;
-				$scope.loading = false;
-                PBs.loadTeam($scope.customer_id)
-                .success(function (data) {
-                    $scope.team = data.team;    
-                });
-			});
-        
+		
+         $scope.$watch( 
+        function () { 
+            return UserService.getUser();
+        },
+        function (value) {
+            if (value !== {}) {
+                $scope.customer_id = value.customer_id;
+                PBs.get($scope.customer_id)
+                    .success(function (data) {
+                        $scope.pbs = data;
+                        $scope.loading = false;
+                        PBs.loadTeam($scope.customer_id)
+                        .success(function (data) {
+                            $scope.team = data.team;    
+                        });
+                    });
+            }
+        }, true
+        );
         
 		// CREATE A NEW PRODUCT BACKLOG ==================================================================
 		$scope.createPb = function () {

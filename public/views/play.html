@@ -1,15 +1,4 @@
 <div class="row" ng-show="user.authenticated">
-<!--
-<div>
-    <form class="navbar-form navbar-left" role="search">
-        <div class="form-group">
-            <input type="text" class="form-control" placeholder="Search">
-            <input type="text" class="form-control" placeholder="Search">
-        </div>
-        <button type="submit" class="btn btn-default">Submit</button>
-    </form>
-</div>
--->
 <!-- User Story List -->  
     <div class="user-story-list" style="width: 25%; position: absolute;">
         <div class="panel panel-default">
@@ -20,11 +9,11 @@
                 <div class="form-inline">
                     <div class="form-group" style="width: 29%;">
                         <label for="name">Name</label>
-                        <input type="text" class="form-control" id="pbID" ng-model="room.name" style="width: 100%;">
+                        <input type="text" class="form-control" id="room_id" ng-model="tempRoom_id" style="width: 100%;">
                     </div>
                     <div class="form-group" style="width: 70%;">
                         <label for="key">Key</label>
-                        <input type="text" class="form-control" id="title" ng-model="room.key" style="width: 100%;">
+                        <input type="text" class="form-control" id="room_key" ng-model="tempRoom_key" style="width: 100%;">
                     </div>
                 </div>
                 <button type="submit" class="btn btn-default" ng-click="updateRoomDetails()">Submit</button>
@@ -99,11 +88,8 @@
             <div class="panel-heading">
                 <h3 class="panel-title">Risk</h3>
             </div>
-        <div>
-            <canvas id="radar" class="chart chart-radar" chart-legend = 'false' chart-data="data" chart-labels="labels" chart-series="series" chart-options ="chartOptions" chart-colours = "chartColours" style="margin-top: 4%;">
+            <canvas id="radar" class="chart chart-radar" chart-labels="labels" chart-data="riskseries" style="margin-top: 4%;">
             </canvas> 
-        </div>
-            <span class="glyphicon glyphicon-refresh" aria-hidden="true" ng-click="refreshRadar()"></span>
         </div>
     </div>
 <!-- Complexity Radar Chart -->
@@ -112,11 +98,8 @@
             <div class="panel-heading">
                 <h3 class="panel-title">Complexity</h3>
             </div>
-        <div>
-            <canvas id="radar" class="chart chart-radar" chart-legend = 'false' chart-data="data" chart-labels="labels" chart-series="series" chart-options ="chartOptions" chart-colours = "chartColours" style="margin-top: 4%;">
+            <canvas id="radar" class="chart chart-radar" chart-data="complexityseries" chart-labels="labels" style="margin-top: 4%;">
             </canvas> 
-        </div>
-            <span class="glyphicon glyphicon-refresh" aria-hidden="true" ng-click="refreshRadar()"></span>
         </div>
     </div>
 <!-- Effort Radar Chart -->
@@ -125,8 +108,7 @@
             <div class="panel-heading">
                 <h3 class="panel-title">Effort</h3>
             </div>
-        <div>
-            <canvas id="radar" class="chart chart-radar" chart-legend = 'false' chart-data="data" chart-labels="labels" chart-series="series" chart-options ="chartOptions" chart-colours = "chartColours" style="margin-top: 4%;">
+            <canvas id="radar" class="chart chart-radar" chart-data="effortseries" chart-labels="labels" style="margin-top: 4%;">
             </canvas> 
         </div>
             <span class="glyphicon glyphicon-refresh" aria-hidden="true" ng-click="refreshRadar()"></span>
@@ -146,20 +128,20 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{lowerRiskValue}}</td>
-                        <td>{{higherRiskValue}}</td>
+                        <td>{{maxandminvalues.risk.min}}</td>
+                        <td>{{maxandminvalues.risk.max}}</td>
                     </tr>
                     <tr>
                         <td>
                             <ul class="list-group">
-                                <li class="list-group-item" ng-repeat="user in lowerRiskVoters track by $index">
+                                <li class="list-group-item" ng-repeat="user in tablevalues.minrisk track by $index">
                                     {{user}}
                                 </li>
                             </ul>
                         </td>
                         <td>
                             <ul class="list-group">
-                                <li class="list-group-item" ng-repeat="user in higherRiskVoters track by $index">
+                                <li class="list-group-item" ng-repeat="user in tablevalues.maxrisk track by $index">
                                     {{user}}
                                 </li>
                             </ul>
@@ -181,20 +163,20 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{lowerComplexityValue}}</td>
-                        <td>{{higherComplexityValue}}</td>
+                        <td>{{maxandminvalues.complexity.min}}</td>
+                        <td>{{maxandminvalues.complexity.max}}</td>
                     </tr>
                     <tr>
                         <td>
                             <ul class="list-group">
-                                <li class="list-group-item" ng-repeat="user in lowerComplexityVoters track by $index">
+                                <li class="list-group-item" ng-repeat="user in tablevalues.mincomplexity track by $index">
                                     {{user}}
                                 </li>
                             </ul>
                         </td>
                         <td>
                             <ul class="list-group">
-                                <li class="list-group-item" ng-repeat="user in higherComplexityVoters track by $index">
+                                <li class="list-group-item" ng-repeat="user in tablevalues.maxcomplexity track by $index">
                                     {{user}}
                                 </li>
                             </ul>
@@ -216,20 +198,20 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{lowerEffortValue}}</td>
-                        <td>{{higherEffortValue}}</td>
+                        <td>{{maxandminvalues.effort.min}}</td>
+                        <td>{{maxandminvalues.effort.max}}</td>
                     </tr>
                     <tr>
                         <td>
                             <ul class="list-group">
-                                <li class="list-group-item" ng-repeat="user in lowerEffortVoters track by $index">
+                                <li class="list-group-item" ng-repeat="user in tablevalues.mineffort track by $index">
                                     {{user}}
                                 </li>
                             </ul>
                         </td>
                         <td>
                             <ul class="list-group">
-                                <li class="list-group-item" ng-repeat="user in higherEffortVoters track by $index">
+                                <li class="list-group-item" ng-repeat="user in tablevalues.maxeffort track by $index">
                                     {{user}}
                                 </li>
                             </ul>
