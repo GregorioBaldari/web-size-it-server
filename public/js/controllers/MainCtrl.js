@@ -124,6 +124,7 @@ appControllers.controller('mainViewCtrl', ['$scope', 'socket', 'PBs', 'UserServi
     };
     
     $scope.resetRadarData = function () {
+        $scope.labels = [];
         $scope.complexityseries[0] = [];
         $scope.riskseries[0] = [];
         $scope.effortseries[0] = [];
