@@ -135,7 +135,11 @@ io.on('connection', function (socket) {
             userName: data.userName,
             userId: socket.id
         });
-        console.log('Emitted Size: ' + data.size);
+        console.log('**Emitted Data**');
+        console.log('Size: ' + data.size);
+        console.log('Risk: ' + data.risk);
+        console.log('Complexity: ' + data.complexity);
+        console.log('Effort: ' + data.effort);
     })
     
     socket.on('joiningRoom', function(userData,fn){
