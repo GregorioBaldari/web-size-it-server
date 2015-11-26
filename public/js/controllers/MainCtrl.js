@@ -18,12 +18,7 @@ appControllers.controller('mainViewCtrl', ['$scope', 'socket', 'PBs', 'UserServi
     
     $scope.labels = [];
     
-    $scope.maxandminvalues = {
-        'risk' : {'max' : 0, 'min': 1000},
-        'effort' : {'max' : 0, 'min': 1000},
-        'complexity' : {'max': 0, 'min': 1000},
-        'size' : {'max': 0, 'min': 1000}
-    };
+    $scope.maxandminvalues = {};
     
     $scope.tablevalues = {
         'minrisk' : [],
@@ -51,7 +46,8 @@ appControllers.controller('mainViewCtrl', ['$scope', 'socket', 'PBs', 'UserServi
                     console.log(data);
                 });
             }
-        }, true
+        },
+        true
     );
     
     //On event sent from the server add the mobile-client to the team list if needed and call an update of the tables 
@@ -60,7 +56,10 @@ appControllers.controller('mainViewCtrl', ['$scope', 'socket', 'PBs', 'UserServi
         
         var temp = [];
         
-        temp = $scope.team.filter(function (user) {
+        temp = $scope.team.filter(function (user, index, team) {
+            if( user.userId === data.userId) {
+                team[index] = data;
+            }
             return user.userId === data.userId;
         });
         
@@ -91,28 +90,37 @@ appControllers.controller('mainViewCtrl', ['$scope', 'socket', 'PBs', 'UserServi
     });
     
     $scope.updateTable = function () {
+        $scope.resetMaxandMinValue();
         var parameters = ['risk', 'complexity', 'effort', 'size'];
         $.each(parameters, function (i, parameter) {
-            var minSelctor = 'min' + parameter;
-            var maxSelctor = 'max' + parameter;
+            var minSelctor = 'min' + parameter,
+                maxSelctor = 'max' + parameter;
             $scope.tablevalues[minSelctor] = [];
             $scope.tablevalues[maxSelctor] = [];
             //Update Min and MAx values for each parameters
             $.each($scope.team, function (index, value) {
-                if ($scope.maxandminvalues[parameter].min > value[parameter]) $scope.maxandminvalues[parameter].min = value[parameter];
-                if ($scope.maxandminvalues[parameter].max < value[parameter]) $scope.maxandminvalues[parameter].max = value[parameter];
+                if ($scope.maxandminvalues[parameter].min > value["" + parameter]) {
+                    $scope.maxandminvalues[parameter].min = value["" + parameter];
+                }
+                if ($scope.maxandminvalues[parameter].max < value["" + parameter]) {
+                    $scope.maxandminvalues[parameter].max = value["" + parameter];
+                }
             });
             //Update user's name for each Min and MAx values
             $.each($scope.team, function (index, value) {
-                if (value[parameter] === $scope.maxandminvalues[parameter].min) $scope.tablevalues[minSelctor].push(value.userName);
-                if (value[parameter] === $scope.maxandminvalues[parameter].max) $scope.tablevalues[maxSelctor].push(value.userName);
+                if (value["" + parameter] === $scope.maxandminvalues[parameter].min) {
+                    $scope.tablevalues[minSelctor].push(value.userName);
+                }
+                if (value["" + parameter] === $scope.maxandminvalues[parameter].max) {
+                    $scope.tablevalues[maxSelctor].push(value.userName);
+                }
             });
         });
         
         //Display radar only we have >=3 mobile client connnected
-        if ($scope.team.length >= 3) {
+//        if ($scope.team.length >= 3) {
             $scope.updateRadarData();
-        }
+//        }
     };
     
     $scope.resetRadarData = function () {
@@ -121,12 +129,21 @@ appControllers.controller('mainViewCtrl', ['$scope', 'socket', 'PBs', 'UserServi
         $scope.effortseries[0] = [];
     };
     
+    $scope.resetMaxandMinValue = function () {
+        $scope.maxandminvalues = {
+            'risk' : {'max' : 0, 'min': 1000},
+            'effort' : {'max' : 0, 'min': 1000},
+            'complexity' : {'max': 0, 'min': 1000},
+            'size' : {'max': 0, 'min': 1000}
+        };
+    };
+    
     //Fill data series for radar chart
     $scope.updateRadarData = function () {
         $scope.resetRadarData();
         $.each($scope.team, function (i, user) {
             $scope.labels.push(user.userName);
-            $scope.complexityseries[0].push(user.risk);
+            $scope.complexityseries[0].push(user.complexity);
             $scope.riskseries[0].push(user.risk);
             $scope.effortseries[0].push(user.effort);
         });
