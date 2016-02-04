@@ -18,8 +18,8 @@ weSizeItApp.factory('socket', ['$rootScope', function ($rootScope) {
     //var projectSpace = 'projectSpace';
     //var socket = io('https://secret-lake-6472.herokuapp.com/' + projectSpace);
     //var socket = io('http://localhost:3000/' + projectSpace);
-    var socket = io('https://wesizeit.herokuapp.com');
-    //var socket = io('http://localhost:3000');
+    //var socket = io('https://wesizeit.herokuapp.com');
+    var socket = io('http://localhost:3000');
     return {
         on: function (eventName, callback) {
             function wrapper() {
@@ -60,21 +60,12 @@ weSizeItApp.config(['$routeProvider', function ($routeProvider) {
         templateUrl: 'views/signup.html',
         public: true,
     })
-//    when('/product-backlog', {
-//        templateUrl: 'pbd.html',
-//        //controller: 'formulaBuilderCtrl'
-//    }).
-    .when('/play', {
-        templateUrl: 'views/play.html',
+    .when('/room', {
+        templateUrl: 'views/room.html',
         controller: 'mainViewCtrl',
-    })
-    .when('/organize', {
-        templateUrl: 'views/pbs.html',
-        //controller: 'mainController',
     })
     .otherwise({
-        redirectTo: '/play',
-        controller: 'mainViewCtrl',
+        redirectTo: '/room',
     });
 }]);
 

@@ -147,11 +147,13 @@ module.exports = function (app) {
     });
     
     //Load the single view file (angular should handle the page changes on the front-end)
-    app.get('*', function (req, res) {
-        console.log('**ROUTER**');
-        console.log('Redirecting to index.html');
-        res.sendfile('./public/views/index.html');
-    });
+//    app.get('*', function (req, res) {
+//        var path = require('path');
+//        console.log('**ROUTER**');
+//        console.log('Redirecting to index.html');
+//        res.sendFile(path.resolve(__dirname + '../../../public/views/index.html'));
+//    });
+    
         //Method above is deprecated. It should be replaced with the one above but it doen't wirk at the moment
         //res.sendFile(__dirname + '../public/views/index.html');
 };

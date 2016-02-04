@@ -71,13 +71,26 @@ app.use(methodOverride('X-HTTP-Method-Override'));
 // Initialize Passport
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static(__dirname + '/public'));
+app.use(express.static('public'));
+//app.use('../css',express.static(__dirname + 'public/css'));
+////app.use('/libs', express.static(__dirname + 'public/libs'));
+//app.use(__dirname + '/public/libs', express.static('libs'));
+//app.use(__dirname + '/public/views', express.static('public'));
+app.get('/', function(req, res){
+    res.sendFile(__dirname + '/public/views/index.html');
+});
+//app.use(express.static(__dirname + '/public/views', { redirect : false }));
+
+//app.use(function(req, res) {
+//  // Use res.sendfile, as it streams instead of reading the file into memory.
+//  res.sendfile(__dirname + '/public/views/index.html');
+//});
 
 // Data Base Stuff ===========================================
 
 // Config files
-var options = { server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } }, 
-                replset: { socketOptions: { keepAlive: 1, connectTimeoutMS : 30000 } } };       
+var options = { server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 300000 } }, 
+                replset: { socketOptions: { keepAlive: 1, connectTimeoutMS : 300000 } } };       
 
 var dbCong = require('./config/db');
 
@@ -99,6 +112,7 @@ db.once('open', function (callback) {
 
 // routes ==================================================
 require('./app/routes/routes')(app);
+app.use(express.static(__dirname + './public'));
 
 app.use(logger({path: "./log/logfile.txt"}));
 var server = require('http').createServer(app);

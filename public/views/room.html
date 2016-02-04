@@ -19,68 +19,6 @@
                 <button type="submit" class="btn btn-default" ng-click="updateRoomDetails()">Submit</button>
             </form>
         </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Product Backlog</h3>
-            </div>
-            <div id="pb-list" class="row">
-                <div class="col-sm-4 col-sm-offset-4 productBacklogList">
-                    <div class="btn-group-vertical productBacklogList" role="group" aria-label="...">
-                        <button type="button" class="btn btn-default" style="text-align: left"  ng-repeat="item in stories" ng-click="loadPBItem(item)">{{ item.title }}</button>
-                    </div>
-                    <p class="text-center" ng-show="loading">
-                        <span class="fa fa-spinner fa-spin fa-3x"></span>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Story Details</h3>
-            </div>
-            <form role="form">
-                <div class="form-inline">
-                    <div class="form-group" style="width: 29%;">
-                        <label for="pbID">ID</label>
-                        <input type="text" class="form-control" id="pbID" ng-model="pbitem.pbID" style="width: 100%;">
-                    </div>
-                    <div class="form-group" style="width: 70%;">
-                        <label for="title">Title</label>
-                        <input type="text" class="form-control" id="title" ng-model="pbitem.title" style="width: 100%;">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="narrative">Narrative</label>
-                    <textarea class="form-control" rows="4" id="narrative" ng-model="pbitem.narrative" placeholder="As a User I want.. So that..">
-                    </textarea>
-                </div>
-                <div class="form-group">
-                    <label for="acceptanceCriteria">Acceptance Criteria</label>
-                    <textarea class="form-control" rows="4" id="acceptanceCriteria" ng-model="pbitem.acceptanceCriteria" placeholder="Given..When..Then..">
-                    </textarea>
-                </div>
-                <div class="form-group">
-                    <label for="size">Size</label>
-                    <input type="text" class="form-control" id="size" ng-model="pbitem.size" style="width: 20%;">
-                </div>
-                <div class="form-inline">
-                    <div class="form-group" style="width: 20%;">
-                        <label for="risk">Risk</label>
-                        <input type="text" class="form-control" id="risk" ng-model="pbitem.risk">
-                    </div>
-                    <div class="form-group" style="width: 20%;">
-                        <label for="complexity">Complexity</label>
-                        <input type="text" class="form-control" id="complexity" ng-model="pbitem.complexity">
-                    </div>
-                    <div class="form-group" style="width: 20%;">
-                        <label for="effort">Effort</label>
-                        <input type="text" class="form-control" id="effort" ng-model="pbitem.effort">
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary" ng-click="updateUserStory()">Submit</button>
-            </form>
-        </div>
     </div>
 <!-- Risk Radar Chart -->
     <div class="risk col-sm-offset-2 col-sm-9 col-md-offset-3 col-md-3">
@@ -113,9 +51,7 @@
         </div>
             <span class="glyphicon glyphicon-refresh" aria-hidden="true" ng-click="refreshRadar()"></span>
         </div>
-    </div>
-</div>
-<div class="row">
+    <div class="row">
 <!-- Risk Valeus Table -->  
     <div class="risk-values col-sm-offset-2 col-sm-9 col-md-offset-3 col-md-3">
         <div class="panel-body text-center">
@@ -221,7 +157,7 @@
             </table>
         </div>
     </div>
-</div>
+    </div>
 <!-- All result Summary -->   
 <div class="row">
     <div class="col-md-offset-3 col-md-9">
@@ -256,26 +192,4 @@
         </div>   
     </div>
 </div>
-
-<div class="row" style="margin-top: 3%;">
-                <!-- Polar Chart -->
-<!--
-            <div class="col-md-5">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Polar Chart</h3>
-                    </div>
-                    <div>
-                        <canvas id="polar-area" class="chart chart-polar-area" chart-legend = 'true' chart-data="polarData" chart-labels="polarLabels">
-                        </canvas> 
-                    </div>
-                    <span class="glyphicon glyphicon-refresh" aria-hidden="true" ng-click="refreshRadar()"></span>
-                </div>
-            </div>
--->
-<!--        Results Tables  -->
-            <div class="col-md-4">       
-                
-            </div>
-        </div>
-    
+</div>
