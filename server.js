@@ -17,6 +17,7 @@ var express         = require('express'),
 
 //Local Storage for Users
 var users = [];
+var User = require('./app/models/user');
 
 // set our port
 var port = process.env.PORT || 3000;
@@ -42,20 +43,19 @@ passport.deserializeUser(function (email, done) {
 });
 
 // Use the UserAppStrategy within Passport
+// Retrieve user_id from UserApp and store with name in MongoDb
 passport.use( new UserAppStrategy({ appId: '563f8a3e36901'},
     function (userprofile, done) {
         console.log('**PASSPORT**');
         console.log('Registering User in Node');
         process.nextTick(function () {
-            var exists = _.any(users, function (user) {
-                return user.id == userprofile.id;
-            });
-            
-            if (!exists) {
-                users.push(userprofile);
-            }
-
-            return done(null, userprofile);
+            User.findOrCreate(
+                {customer_id: userprofile.id},
+                {email: userprofile.email, name: userprofile._raw.first_name},
+                function(err, userprofile, created) {
+            if (created) console.log("User: " + userprofile.customer_id + ": Has been created for: " + userprofile.email);
+            if (!created) console.log("User: " + userprofile.customer_id +": Already exists");
+        });
         });
     }
 ));
@@ -71,26 +71,20 @@ app.use(methodOverride('X-HTTP-Method-Override'));
 // Initialize Passport
 app.use(passport.initialize());
 app.use(passport.session());
+// All the statics file will be served from the public folder
 app.use(express.static('public'));
-//app.use('../css',express.static(__dirname + 'public/css'));
-////app.use('/libs', express.static(__dirname + 'public/libs'));
-//app.use(__dirname + '/public/libs', express.static('libs'));
-//app.use(__dirname + '/public/views', express.static('public'));
+// Redirect to index.html file when load the app
 app.get('/', function(req, res){
     res.sendFile(__dirname + '/public/views/index.html');
 });
-//app.use(express.static(__dirname + '/public/views', { redirect : false }));
-
-//app.use(function(req, res) {
-//  // Use res.sendfile, as it streams instead of reading the file into memory.
-//  res.sendfile(__dirname + '/public/views/index.html');
-//});
 
 // Data Base Stuff ===========================================
 
 // Config files
-var options = { server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 300000 } }, 
-                replset: { socketOptions: { keepAlive: 1, connectTimeoutMS : 300000 } } };       
+// this is a temporaly solution to keep the connection open for some hours.
+//You need to find a way to store a cookie in front end and that's it!
+var options = { server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 3000000 } }, 
+                replset: { socketOptions: { keepAlive: 1, connectTimeoutMS : 3000000 } } };       
 
 var dbCong = require('./config/db');
 
@@ -104,11 +98,6 @@ db.once('open', function (callback) {
     console.log("Mongo Db is connected");
 });
 
-
-//
-//// get all data/stuff of the body (POST) parameters
-//// parse application/json 
-//app.use(bodyParser.json()); 
 
 // routes ==================================================
 require('./app/routes/routes')(app);
@@ -127,6 +116,8 @@ server.listen(app.get('port'), function() {
     console.log('Running on port', app.get('port'));
 });
 
+//SocketIo configurations
+//You need to imporeve a lot here mate!!!!!
 io.on('connection', function (socket) {
     //team.push(socket);
     console.log('**SOCKET**');

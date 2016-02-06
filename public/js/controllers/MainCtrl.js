@@ -152,13 +152,9 @@ appControllers.controller('mainViewCtrl', ['$scope', 'socket', 'PBs', 'UserServi
     
     //Send room details to the server and update the user details. this will call the fire of a socket event to notify the server
     $scope.updateRoomDetails = function () {
-        var roomDetails = {};
-        roomDetails.room_id = $scope.tempRoom_id;
-        roomDetails.room_key = $scope.tempRoom_key;
-        PBs.saveRoomDetails($scope.currentUser.customer_id, roomDetails)
-            .success(function (user) {
-                UserService.setUser(user);
-            });
+        UserService.getUser().room_id = $scope.tempRoom_id;
+        UserService.getUser().room_key = $scope.tempRoom_key;
+        UserService.updateUsers();
     };
 
 }]);

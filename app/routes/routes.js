@@ -6,7 +6,37 @@ var TeamMember = require('../models/teamMember');
 module.exports = function (app) {
     
     var customer_id = "";
+    
+    app.post('/api/users', function (req, res) {
+        console.log('**ROUTER**');
+        console.log('Registering connected user');
+        User.findOrCreate(
+            {user_id: req.body.user_id},
+            {email: req.body.email, name: req.body.first_name},
+            function (error, user, created) {
+                if (error) res.send(error)
+                //if(created) console.log('Welcome to the new User');
+                //if(!created) console.log('Welcome back User')
+                res.send(user._doc);
+            });
+    });
+    
+    app.put('/api/users/:user_id', function (req, res) {
+        console.log('**ROUTER**');
+        console.log('Udating details for: ' + req.body.name);
+        User.findOne({user_id: req.params.user_id   }, function (err, user) {
+            if (err) res.send(err);
+            user.room_id = req.body.room_id;
+            user.room_key = req.body.room_key;
+            user.save(function (err) {
+                if (err) res.send(err);
+                res.send(user);
+            });
+        });
+    });
 
+    //EVERYTHING BELOW SHOULD BE REMOVED FOR RELEASE MVP1
+    
 	// Api ---------------------------------------------------------------------
 	// Get all Product Backlogs
 	app.get('/api/pbs/:customer_id', function (req, res) {
@@ -93,8 +123,8 @@ module.exports = function (app) {
         console.log('Find or Create an User');
         User.findOrCreate({customer_id: req.params.customer_id}, function(err, user, created) {
             if (err) res.send(err);
-            if (created) console.log("User has been created for :" + user.customer_id);
-            else console.log("User: " + user.customer_id +"already existed");
+            if (created) console.log("User: " +user.customer_id + ": Has been created for");
+            if (!created) console.log("User: " + user.customer_id +": Already existed");
             res.json(user);
         });
     });
@@ -145,15 +175,4 @@ module.exports = function (app) {
             });
         });
     });
-    
-    //Load the single view file (angular should handle the page changes on the front-end)
-//    app.get('*', function (req, res) {
-//        var path = require('path');
-//        console.log('**ROUTER**');
-//        console.log('Redirecting to index.html');
-//        res.sendFile(path.resolve(__dirname + '../../../public/views/index.html'));
-//    });
-    
-        //Method above is deprecated. It should be replaced with the one above but it doen't wirk at the moment
-        //res.sendFile(__dirname + '../public/views/index.html');
 };
