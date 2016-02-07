@@ -3,10 +3,9 @@
 var appControllers = angular.module('appControllers', ['chart.js']);
 
 //Main View Controller
-appControllers.controller('mainViewCtrl', ['$scope', 'socket', 'PBs', 'UserService', function ($scope, socket, PBs, UserService) {
+appControllers.controller('mainViewCtrl', ['$scope', 'socket', 'UserService', function ($scope, socket, UserService) {
     var team = [];
     $scope.team = team;
-    $scope.stories = PBs.getCurrentProductBacklog().pbitems;
    
     $scope.currentUser = {};
     $scope.tempRoom_id = "";
