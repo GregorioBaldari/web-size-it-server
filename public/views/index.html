@@ -10,46 +10,33 @@
     <title>WeSizeIT</title>
 </head>
 <body ng-app="weSizeItApp">
-<!-- Menu-->
-<!--    <div ng-show="user.authenticated">-->
-        <div ng-model="team" class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <nav class="navbar navbar-default navbar-fixed-top">
-                        <div class="container">
-                            <div class="navbar-header">
-                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                                    <span class="sr-only">Toggle navigation</span>
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
-                                </button>
-                                <a class="navbar-brand" href="#room">WeSizeIT</a>
-                            </div>
-                        </div>
-                    </nav>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 4%;">
-                    <div class="col-md-12">        
-                        <div ng-view>
+    <div ng-model="team" class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <nav class="navbar navbar-default navbar-fixed-top">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand" href="#room">WeSizeIT</a>
                         </div>
                     </div>
+                </nav>
             </div>
         </div>
-<!--    </div>-->
+        <div class="row" style="margin-top: 4%;">
+            <div class="col-md-12">        
+                <div ng-view>
+                </div>
+            </div>
+        </div>
+    </div>
 <a href="login" ua-logout>Log Out</a>
 </body>
-    
-     <!-- Chart Library
-    ================================================== -->
-<!--
-    
-    <script src="../libs/chartjs/Chart.js"></script>
-    
-    <script src="../libs/chartjs/Chart.js"></script>
-    
--->
     
      <!-- JQuery
     ================================================== -->
@@ -76,19 +63,12 @@
     ================================================== -->
     <script src="../libs/bootstrap/dist/js/bootstrap.min.js"></script>  
     
-    
+    <!-- This App
+    ================================================== -->
     <script src="../js/core.js"></script>
     <script src="../js/services/userService.js"></script>
-    <script src="../js/services/pbService.js"></script>
     <script src="../js/controllers/MainCtrl.js"></script>
-    <script src="../js/controllers/PBsCtrl.js"></script>
-<!--
-    
-    <script src="js/controllers.js"></script>
-    <script src="js/storyPageController.js"></script> 
-    <script src="js/app.js"></script>
-    
--->
+
     <!-- SocketIO
     ================================================== -->
     <script src="../libs/sio-client/socket.io.js"></script>

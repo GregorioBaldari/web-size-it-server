@@ -88,7 +88,7 @@ var options = { server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000
 
 var dbCong = require('./config/db');
 
-// connect to our mongoDB database
+// MongoDB configuration and connection
 mongoose.connect(dbCong.url, options);
 
 var db = mongoose.connection;
@@ -99,7 +99,7 @@ db.once('open', function (callback) {
 });
 
 
-// routes ==================================================
+// App Configuaration ==================================================
 require('./app/routes/routes')(app);
 app.use(express.static(__dirname + './public'));
 
@@ -110,15 +110,13 @@ var io = require('socket.io')(server);
 var websizeclient; //Store a reference tot eh webapplication client (the one that receive sizes)
 
 
-// start app ===============================================
+//Start app 
 server.listen(app.get('port'), function() {
     console.log("**NODE**");
     console.log('Running on port', app.get('port'));
 });
 
 //SocketIo configurations
-//You need to imporeve a lot here mate!!!!!
-      
 io.on('connection', function (socket) {
     console.log('**SOCKET**');
     console.log('Connection established for : ' + socket.id);
@@ -135,9 +133,7 @@ io.on('connection', function (socket) {
         socket.type = 'Dashboard';
         console.log('Dashboard joined room: ' + user.room_id);
     });
-    
-    // TRY TO EMBEDD THIS CODE IN DESKTOP CLIENT
-    //  Mobile shoud emit and client should catch!!
+
     //Called when the mobile app send a new data to the Dashboard App
     socket.on('updateModel', function(data){
         console.log('**SOCKET**');
@@ -193,20 +189,7 @@ io.on('connection', function (socket) {
             });
             console.log('Desktop App notified in room: ' + socket.room);
         }
-    });
-
-    //TO BE CLEANED OR REMOVED
-    //When Client send 'client-connection' event, remove the client from the team array and store it in websizeclient variable.
-    socket.on('client-connection', function(data){
-        console.log('**DELETED HANDLER CLEAN CODE PLEASE**');
-//        console.log('ID: ' + socket.id + ':Client application');
-//        console.log('In Room :' + data);
-//        socket.type = 'Desktop App';
-//        socket.leave(socket.room);
-//        socket.room = data;
-//        socket.join(data);
-    });  
-    
+    }); 
 });
 
 exports = module.exports = app;

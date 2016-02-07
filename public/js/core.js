@@ -2,9 +2,9 @@ var weSizeItApp = angular.module('weSizeItApp', [
         'ngRoute',
         'chart.js',
         'userService',
-        'pbService',
+        //'pbService',
         'appControllers',
-        'pbController',
+        //'pbController',
         'UserApp'
     ]);
 //'UserApp',
@@ -74,7 +74,8 @@ weSizeItApp.config(['$routeProvider', function ($routeProvider) {
 //This stuff is for login
 //Please note that the btoa() function may not be supported by all browsers.
 //btoa() is used to autoriz the backend API
-weSizeItApp.run(function($rootScope, user,$http, PBs, UserService, UserApp) {
+//weSizeItApp.run(function($rootScope, user,$http, PBs, UserService, UserApp) {
+weSizeItApp.run(function($rootScope, user,$http, UserService, UserApp) {
 	user.init({ appId: '563f8a3e36901' });
     $rootScope.$on('user.login', function () {
         console.log('User Token: ' + user.token());
@@ -85,18 +86,6 @@ weSizeItApp.run(function($rootScope, user,$http, PBs, UserService, UserApp) {
             if(error) console.log('UserApp Error: ' + error);
             UserService.registerUsers(result[0]);
         });
-//        user.getCurrent().then(function (currentUser) {
-//            UserService.registerUsers(user);
-//        });
-//        UserService.registerUsers(currentUser);
-//        user.getCurrent().then(function (currentUser) {
-//            //Store user_id for reference in MongoDB call
-//            PBs.saveCustomer(currentUser.user_id)
-//            .success(function (user) {
-//                    console.log('Team Member Saved: ' + user);
-//                    UserService.setUser(user);
-//                });
-//        });
     });
     $rootScope.$on('user.logout', function () {
         $http.defaults.headers.common.Authorization = null;
