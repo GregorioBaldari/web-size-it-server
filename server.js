@@ -118,18 +118,31 @@ server.listen(app.get('port'), function() {
 
 //SocketIo configurations
 //You need to imporeve a lot here mate!!!!!
+      
 io.on('connection', function (socket) {
-    //team.push(socket);
     console.log('**SOCKET**');
-    console.log('ID: ' + socket.id + ':Connetion');
-    console.log('In room: ' + socket.room);
-    socket.type = 'Mobile App';
-    //On updateModel event sent by the application get the data and send to the web app for visualization
-    // NOw client send message direactly to Desktop Application
+    console.log('Connection established for : ' + socket.id);
+    
+    // Called when the dashboard app connect for the first time, but only if a room ID has been defined
+    socket.on('dashboardConnection', function (user) {
+        console.log('**SOCKET**');
+        console.log('Dashboard connetion In Progress for User ID: ' + user._id);
+        console.log('In room: ' + user.room_id);
+        //To be sure the client is not in any more room
+        socket.leave(socket.room);
+        socket.room = user.room_id;
+        socket.join(user.room_id);
+        socket.type = 'Dashboard';
+        console.log('Dashboard joined room: ' + user.room_id);
+    });
+    
+    // TRY TO EMBEDD THIS CODE IN DESKTOP CLIENT
+    //  Mobile shoud emit and client should catch!!
+    //Called when the mobile app send a new data to the Dashboard App
     socket.on('updateModel', function(data){
         console.log('**SOCKET**');
-        console.log('ID: ' + socket.id);
-        console.log('Riceived an Update from ' + data.userName);
+        console.log('Receiving new data from Socket: ' + socket.id);
+        console.log('By user: ' + data.userName);
         console.log('In Room ' + socket.room);
         socket.broadcast.to(socket.room).emit('newData', {
             risk: data.risk,
@@ -147,43 +160,51 @@ io.on('connection', function (socket) {
         console.log('Effort: ' + data.effort);
     })
     
+    //Called when the mobile app send a request to join the room
     socket.on('joiningRoom', function(userData,fn){
         console.log('**SOCKET**');
-        console.log('ID: ' + socket.id)
-        console.log('Joining Room: ' + userData.room);
+        socket.type = 'Mobile';
+        console.log('Request for socket: ' + socket.id);
+        console.log('To join room: ' + userData.room);
+        console.log('From User: ' + userData.userName);
         //To be sure the client is not in any more room
         socket.leave(socket.room);
         socket.room = userData.room;
+        socket.userName = userData.userName;
         socket.join(userData.room);
         fn(true);
     });
+    
+    //TO BE CLEANED!!!!!!
     //When Mobile app send 'disconnect' event, remove the client from the team array
     //If it's not in team array ( team.indexOf(socket) == -1) this means that the Client is disconnected!
     socket.on('disconnect', function() {
         console.log('**SOCKET**');
         console.log('ID: ' + socket.id + ':Disconnetion');
-        if (socket.type === 'Desktop App') {
-            socket.broadcast.emit('clientDisconnection', {
+        if (socket.type === 'Dashboard') {
+            socket.broadcast.to(socket.room).emit('DesktopDisconnection', {
                 userId: socket.id
             });
-            console.log('Other Mobile App notified in room: ' + socket.room);
+            console.log('Mobile App notified of closing room for: ' + socket.room);
         } else {
-            socket.broadcast.emit('userDisconnection', {
-                userId: socket.id
+            socket.broadcast.to(socket.room).emit('mobileDisconnection', {
+                userId: socket.id,
+                userName: socket.userName
             });
-            console.log('Client App notified in room: ' + socket.room);
+            console.log('Desktop App notified in room: ' + socket.room);
         }
     });
-    
+
+    //TO BE CLEANED OR REMOVED
     //When Client send 'client-connection' event, remove the client from the team array and store it in websizeclient variable.
     socket.on('client-connection', function(data){
-        console.log('**SOCKET**');
-        console.log('ID: ' + socket.id + ':Client application');
-        console.log('In Room :' + data);
-        socket.type = 'Desktop App';
-        socket.leave(socket.room);
-        socket.room = data;
-        socket.join(data);
+        console.log('**DELETED HANDLER CLEAN CODE PLEASE**');
+//        console.log('ID: ' + socket.id + ':Client application');
+//        console.log('In Room :' + data);
+//        socket.type = 'Desktop App';
+//        socket.leave(socket.room);
+//        socket.room = data;
+//        socket.join(data);
     });  
     
 });

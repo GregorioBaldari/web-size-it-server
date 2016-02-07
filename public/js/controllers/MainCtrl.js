@@ -36,19 +36,19 @@ appControllers.controller('mainViewCtrl', ['$scope', 'socket', 'PBs', 'UserServi
         function () {
             return UserService.getUser();
         },
-        function (value) {
-            if (value !== undefined) {
-                $scope.currentUser = value;
-                $scope.tempRoom_id = value.room_id;
-                $scope.tempRoom_key = value.room_key;
-                console.log('In currentUSer watch with data:' + value.room_id);
-                socket.emit('client-connection', value.room_id, function (data) {
-                    console.log(data);
-                });
+        function (user) {
+            if (user !== undefined && user.room_id !== undefined ) {
+                $scope.initializeRoom(user);
+                $scope.tempRoom_id = user.room_id;
             }
         },
         true
     );
+    
+    $scope.initializeRoom = function (user) {
+        socket.emit('dashboardConnection', user, function (data) {
+                    console.log('Connecting to room: ' + user.room_id);
+    })};
     
     //On event sent from the server add the mobile-client to the team list if needed and call an update of the tables 
     socket.on('newData', function (data) {
@@ -156,5 +156,5 @@ appControllers.controller('mainViewCtrl', ['$scope', 'socket', 'PBs', 'UserServi
         UserService.getUser().room_key = $scope.tempRoom_key;
         UserService.updateUsers();
     };
-
+    
 }]);
