@@ -2,24 +2,24 @@
   "name": "starter-node-angular",
   "version" : "1.0.0",
   "dependencies" : {
-        "bootstrap" : "latest",
-        "jquery" : "latest",
-        "jquery-ui" : "latest",
-        "font-awesome": "latest",
-        "animate.css": "latest",
-        "angular": "latest",
-        "angular-route": "latest",
-        "angular-ui-bootstrap-bower" : "0.13.4",
-        "angular-ng-pageslide" : "latest",
-        "angular-sanitize" : "latest",
-        "angular-chart" : "latest",
-        "userapp" : "latest",
-        "userapp-angular" : "latest",
-        "sio-client" : "latest",
-        "chartjs" : "latest",
-        "angular-ui-sortable" : "latest"
+    "bootstrap" : "latest",
+    "jquery" : "latest",
+    "jquery-ui" : "latest",
+    "font-awesome": "latest",
+    "animate.css": "latest",
+    "angular": "latest",
+    "angular-route": "latest",
+    "angular-ui-bootstrap-bower" : "0.13.4",
+    "angular-ng-pageslide" : "latest",
+    "angular-sanitize" : "latest",
+    "angular-chart" : "latest",
+    "userapp" : "latest",
+    "userapp-angular" : "latest",
+    "sio-client" : "latest",
+    "chartjs" : "latest",
+    "angular-ui-sortable" : "latest"
   },
   "resolutions" : {
-        "angular" : "1.4.7"
+    "angular" : "1.4.7"
   }
 }
