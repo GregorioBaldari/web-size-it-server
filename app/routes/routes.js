@@ -13,7 +13,7 @@ module.exports = function (app) {
             {user_id: req.body.user_id},
             {email: req.body.email, name: req.body.first_name},
             function (error, user, created) {
-                if (error) res.send(error)
+                if (error) res.status(500).send(error)
                 //if(created) console.log('Welcome to the new User');
                 //if(!created) console.log('Welcome back User')
                 res.send(user._doc);
@@ -26,11 +26,11 @@ module.exports = function (app) {
         console.log('**ROUTER**');
         console.log('Udating details for: ' + req.body.name);
         User.findOne({user_id: req.params.user_id   }, function (err, user) {
-            if (err) res.send(err);
+            if (err) res.status(500).send(err);
             user.room_id = req.body.room_id;
             user.room_key = req.body.room_key;
             user.save(function (err) {
-                if (err) res.send(err);
+                if (err) res.status(500).send(err);
                 res.send(user);
             });
         });

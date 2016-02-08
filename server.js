@@ -106,11 +106,8 @@ app.use(express.static(__dirname + './public'));
 app.use(logger({path: "./log/logfile.txt"}));
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
-//var team = []; //Store a list of (mobile)client
-var websizeclient; //Store a reference tot eh webapplication client (the one that receive sizes)
 
-
-//Start app 
+//Start the app 
 server.listen(app.get('port'), function() {
     console.log("**NODE**");
     console.log('Running on port', app.get('port'));
