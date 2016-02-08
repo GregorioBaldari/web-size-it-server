@@ -66,7 +66,7 @@ app.use(cookieParser());
 app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }));
 app.use(flash());
 app.use(bodyParser.json());
-app.use(methodOverride('X-HTTP-Method-Override')); 
+app.use(methodOverride('X-HTTP-Method-Override'));
 
 // Initialize Passport
 app.use(passport.initialize());
@@ -83,8 +83,10 @@ app.get('/', function(req, res){
 // Config files
 // this is a temporaly solution to keep the connection open for some hours.
 //You need to find a way to store a cookie in front end and that's it!
-var options = { server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 3000000 } }, 
-                replset: { socketOptions: { keepAlive: 1, connectTimeoutMS : 3000000 } } };       
+var options = {
+  server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 3000000 } },
+  replset: { socketOptions: { keepAlive: 1, connectTimeoutMS : 3000000 } }
+};
 
 var dbCong = require('./config/db');
 
@@ -107,7 +109,12 @@ app.use(logger({path: "./log/logfile.txt"}));
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 
+<<<<<<< HEAD
 //Start the app 
+=======
+
+//Start app
+>>>>>>> 7c0a8260fc81d2c57f8fad9b06a28392bcd566dd
 server.listen(app.get('port'), function() {
     console.log("**NODE**");
     console.log('Running on port', app.get('port'));
@@ -117,7 +124,7 @@ server.listen(app.get('port'), function() {
 io.on('connection', function (socket) {
     console.log('**SOCKET**');
     console.log('Connection established for : ' + socket.id);
-    
+
     // Called when the dashboard app connect for the first time, but only if a room ID has been defined
     socket.on('dashboardConnection', function (user) {
         console.log('**SOCKET**');
@@ -152,7 +159,7 @@ io.on('connection', function (socket) {
         console.log('Complexity: ' + data.complexity);
         console.log('Effort: ' + data.effort);
     })
-    
+
     //Called when the mobile app send a request to join the room
     socket.on('joiningRoom', function(userData,fn){
         console.log('**SOCKET**');
@@ -167,7 +174,7 @@ io.on('connection', function (socket) {
         socket.join(userData.room);
         fn(true);
     });
-    
+
     //TO BE CLEANED!!!!!!
     //When Mobile app send 'disconnect' event, remove the client from the team array
     //If it's not in team array ( team.indexOf(socket) == -1) this means that the Client is disconnected!
@@ -186,7 +193,7 @@ io.on('connection', function (socket) {
             });
             console.log('Desktop App notified in room: ' + socket.room);
         }
-    }); 
+    });
 });
 
 exports = module.exports = app;
