@@ -109,12 +109,7 @@ app.use(logger({path: "./log/logfile.txt"}));
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 
-<<<<<<< HEAD
-//Start the app 
-=======
-
 //Start app
->>>>>>> 7c0a8260fc81d2c57f8fad9b06a28392bcd566dd
 server.listen(app.get('port'), function() {
     console.log("**NODE**");
     console.log('Running on port', app.get('port'));
