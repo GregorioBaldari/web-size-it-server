@@ -2,10 +2,9 @@ var mongoose = require('mongoose');
 
 var findOrCreate = require('mongoose-findorcreate');
 
-//Product Backlog Schema
+//MongoDB User Schema
 var UserSchema = mongoose.Schema({
         user_id: String,
-        //customer_id : String,
         room_id: String,
         room_key: String,
         name: String,

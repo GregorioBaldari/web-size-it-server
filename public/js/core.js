@@ -72,7 +72,7 @@ weSizeItApp.config(['$routeProvider', function ($routeProvider) {
 }]);
 
 //This stuff is for login
-//Please note that the btoa() function may not be supported by all browsers.
+//The btoa() function may not be supported by all browsers.
 //btoa() is used to autoriz the backend API
 //weSizeItApp.run(function($rootScope, user,$http, PBs, UserService, UserApp) {
 weSizeItApp.run(function($rootScope, user,$http, UserService, UserApp) {
