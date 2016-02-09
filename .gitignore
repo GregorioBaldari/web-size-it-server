@@ -1,2 +1,4 @@
 node_modules
 log/**
+
+node_modules/express/node_modules/cookie/HISTORY.md

@@ -1,0 +1,2 @@
+::1 - - [Tue, 09 Feb 2016 23:05:20 GMT] "GET /staticLib/angular-chart.min.js.map HTTP/1.1" 404 47 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.103 Safari/537.36"
+::1 - - [Tue, 09 Feb 2016 23:05:39 GMT] "GET /staticLib/angular-chart.min.js.map HTTP/1.1" 404 47 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.103 Safari/537.36"
