@@ -16,7 +16,7 @@ module.exports = function (app) {
                 if (error) res.status(500).send(error)
                 //if(created) console.log('Welcome to the new User');
                 //if(!created) console.log('Welcome back User')
-                res.send(user._doc);
+                res.send(user.toJSON());
             });
     });
     
@@ -31,7 +31,7 @@ module.exports = function (app) {
             user.room_key = req.body.room_key;
             user.save(function (err) {
                 if (err) res.status(500).send(err);
-                res.send(user);
+                res.send(user.toJSON());
             });
         });
     });
