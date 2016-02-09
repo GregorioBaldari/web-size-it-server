@@ -44,5 +44,8 @@
   },
   "devDependencies": {
     "supertest": "^1.1.0"
+  },
+  "directories": {
+    "test": "test"
   }
 }
