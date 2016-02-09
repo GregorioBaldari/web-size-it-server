@@ -3,10 +3,9 @@
 var appControllers = angular.module('appControllers', ['chart.js']);
 
 //Main View Controller
-appControllers.controller('mainViewCtrl', ['$scope', 'socket', 'PBs', 'UserService', function ($scope, socket, PBs, UserService) {
+appControllers.controller('mainViewCtrl', ['$scope', 'socket', 'UserService', function ($scope, socket, UserService) {
     var team = [];
     $scope.team = team;
-    $scope.stories = PBs.getCurrentProductBacklog().pbitems;
    
     $scope.currentUser = {};
     $scope.tempRoom_id = "";
@@ -36,19 +35,19 @@ appControllers.controller('mainViewCtrl', ['$scope', 'socket', 'PBs', 'UserServi
         function () {
             return UserService.getUser();
         },
-        function (value) {
-            if (value !== undefined) {
-                $scope.currentUser = value;
-                $scope.tempRoom_id = value.room_id;
-                $scope.tempRoom_key = value.room_key;
-                console.log('In currentUSer watch with data:' + value.room_id);
-                socket.emit('client-connection', value.room_id, function (data) {
-                    console.log(data);
-                });
+        function (user) {
+            if (user !== undefined && user.room_id !== undefined ) {
+                $scope.initializeRoom(user);
+                $scope.tempRoom_id = user.room_id;
             }
         },
         true
     );
+    
+    $scope.initializeRoom = function (user) {
+        socket.emit('dashboardConnection', user, function (data) {
+                    console.log('Connecting to room: ' + user.room_id);
+    })};
     
     //On event sent from the server add the mobile-client to the team list if needed and call an update of the tables 
     socket.on('newData', function (data) {
@@ -152,13 +151,9 @@ appControllers.controller('mainViewCtrl', ['$scope', 'socket', 'PBs', 'UserServi
     
     //Send room details to the server and update the user details. this will call the fire of a socket event to notify the server
     $scope.updateRoomDetails = function () {
-        var roomDetails = {};
-        roomDetails.room_id = $scope.tempRoom_id;
-        roomDetails.room_key = $scope.tempRoom_key;
-        PBs.saveRoomDetails($scope.currentUser.customer_id, roomDetails)
-            .success(function (user) {
-                UserService.setUser(user);
-            });
+        UserService.getUser().room_id = $scope.tempRoom_id;
+        UserService.getUser().room_key = $scope.tempRoom_key;
+        UserService.updateUsers();
     };
-
+    
 }]);

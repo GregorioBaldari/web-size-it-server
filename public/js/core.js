@@ -2,9 +2,9 @@ var weSizeItApp = angular.module('weSizeItApp', [
         'ngRoute',
         'chart.js',
         'userService',
-        'pbService',
+        //'pbService',
         'appControllers',
-        'pbController',
+        //'pbController',
         'UserApp'
     ]);
 //'UserApp',
@@ -18,9 +18,11 @@ weSizeItApp.factory('socket', ['$rootScope', function ($rootScope) {
     //var projectSpace = 'projectSpace';
     //var socket = io('https://secret-lake-6472.herokuapp.com/' + projectSpace);
     //var socket = io('http://localhost:3000/' + projectSpace);
-    var socket = io('https://wesizeit.herokuapp.com');
-    //var socket = io('http://localhost:3000');
+    //var socket = io('https://wesizeit.herokuapp.com');
+    var socket = io('http://localhost:3000');
+    var socket;
     return {
+
         on: function (eventName, callback) {
             function wrapper() {
                 var args = arguments;
@@ -60,39 +62,29 @@ weSizeItApp.config(['$routeProvider', function ($routeProvider) {
         templateUrl: 'views/signup.html',
         public: true,
     })
-//    when('/product-backlog', {
-//        templateUrl: 'pbd.html',
-//        //controller: 'formulaBuilderCtrl'
-//    }).
-    .when('/play', {
-        templateUrl: 'views/play.html',
+    .when('/room', {
+        templateUrl: 'views/room.html',
         controller: 'mainViewCtrl',
-    })
-    .when('/organize', {
-        templateUrl: 'views/pbs.html',
-        //controller: 'mainController',
     })
     .otherwise({
-        redirectTo: '/play',
-        controller: 'mainViewCtrl',
+        redirectTo: '/room',
     });
 }]);
 
 //This stuff is for login
-//Please note that the btoa() function may not be supported by all browsers.
+//The btoa() function may not be supported by all browsers.
 //btoa() is used to autoriz the backend API
-weSizeItApp.run(function($rootScope, user,$http, PBs, UserService) {
+//weSizeItApp.run(function($rootScope, user,$http, PBs, UserService, UserApp) {
+weSizeItApp.run(function($rootScope, user,$http, UserService, UserApp) {
 	user.init({ appId: '563f8a3e36901' });
     $rootScope.$on('user.login', function () {
-        $http.defaults.headers.common.Authorization = 'Basic ' + btoa(':' + user.token());
         console.log('User Token: ' + user.token());
-        user.getCurrent().then(function (currentUser) {
-            //Store user_id for reference in MongoDB call
-            PBs.saveCustomer(currentUser.user_id)
-            .success(function (user) {
-                    console.log('Team Member Saved: ' + user);
-                    UserService.setUser(user);
-                });
+        $http.defaults.headers.common.Authorization = 'Basic ' + btoa(':' + user.token());
+        UserApp.User.get({
+            'user_id' : user.user_id
+        }, function( error, result) {
+            if(error) console.log('UserApp Error: ' + error);
+            UserService.registerUsers(result[0]);
         });
     });
     $rootScope.$on('user.logout', function () {
