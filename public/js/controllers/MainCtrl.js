@@ -3,13 +3,7 @@
 var appControllers = angular.module('appControllers', ['chart.js']);
 
 //Main View Controller
-appControllers.controller('mainViewCtrl', ['$scope', 'socket', 'UserService', '$location', '$window', function ($scope, socket, UserService, $location, $window) {
-    
-    //Google Analytics Event Configuration
-    $scope.$on('$viewContentLoaded', function(event) {
-        $window.ga('send', 'pageview', { page: $location.url() });
-    });
-    
+appControllers.controller('mainViewCtrl', ['$scope', 'socket', 'UserService', function ($scope, socket, UserService) {
     var team = [];
     $scope.team = team;
    
