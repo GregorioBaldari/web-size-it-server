@@ -18,6 +18,7 @@ weSizeItApp.factory('socket', ['$rootScope', function ($rootScope) {
     //var projectSpace = 'projectSpace';
     //var socket = io('https://secret-lake-6472.herokuapp.com/' + projectSpace);
     //var socket = io('http://localhost:3000/' + projectSpace);
+    
     //var socket = io('https://wesizeit.herokuapp.com');
     var socket = io('http://localhost:3000');
     var socket;
