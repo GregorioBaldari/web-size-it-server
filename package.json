@@ -40,12 +40,16 @@
     "passport": ">= 0.0.0",
     "passport-userapp": ">= 0.2.0",
     "underscore": "1.4.3",
-    "supertest": "1.1.0"
+    "supertest": "1.1.0",
+    "bower": "1.7.2"
   },
   "devDependencies": {
     "supertest": "^1.1.0"
   },
   "directories": {
     "test": "test"
-  }
+  },
+  "scripts": {
+    "postinstall": "./node_modules/bower/bin/bower install"
+  }  
 }
