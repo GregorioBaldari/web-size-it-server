@@ -2,12 +2,10 @@ var weSizeItApp = angular.module('weSizeItApp', [
         'ngRoute',
         'chart.js',
         'userService',
-        //'pbService',
         'appControllers',
-        //'pbController',
-        'UserApp'
+        'UserApp',
+        'angular-google-analytics'
     ]);
-//'UserApp',
 
 var user_id = "";
 
@@ -18,8 +16,8 @@ weSizeItApp.factory('socket', ['$rootScope', function ($rootScope) {
     //var projectSpace = 'projectSpace';
     //var socket = io('https://secret-lake-6472.herokuapp.com/' + projectSpace);
     //var socket = io('http://localhost:3000/' + projectSpace);
-    //var socket = io('https://wesizeit.herokuapp.com');
-    var socket = io('http://localhost:3000');
+    var socket = io('https://wesizeit.herokuapp.com');
+    //var socket = io('http://localhost:3000');
     var socket;
     return {
 
@@ -50,6 +48,11 @@ weSizeItApp.factory('socket', ['$rootScope', function ($rootScope) {
         }
     };
 }]);
+
+weSizeItApp.config(function (AnalyticsProvider) {
+    AnalyticsProvider.setAccount('UA-73584409-1')
+  // Add configuration code as desired - see below
+});
 
 weSizeItApp.config(['$routeProvider', function ($routeProvider) {
     $routeProvider
