@@ -8,6 +8,17 @@
 <link rel="stylesheet" type="text/css" href="../css/style.css"/>
 <head>
     <title>WeSizeIT</title>
+    <!-- Google Analytics -->
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-73584409-1', 'none'); //Use this when on local
+        //ga('create', 'UA-73584409-1', 'auto'); //Use this when on production
+    </script>
+    <!-- End Google Analytics -->
 </head>
 <body ng-app="weSizeItApp">
     <div ng-model="team" class="container-fluid">
@@ -35,7 +46,7 @@
             </div>
         </div>
     </div>
-<a href="login" ua-logout>Log Out</a>
+<a href="login" analytics-on="click" analytics-event="Log Out" ua-logout>Log Out</a>
 </body>
     
      <!-- JQuery
@@ -72,5 +83,11 @@
     <!-- SocketIO
     ================================================== -->
     <script src="../libs/sio-client/socket.io.js"></script>
+    
+    <!-- Google Analytics
+    ================================================== -->
+    <script src="../libs/angulartics/dist/angulartics.min.js"></script>
+    <script src="../staticLib/angulartics-google-analytics.min.js"></script>
+    
     
 </html>

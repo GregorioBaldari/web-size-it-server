@@ -73,6 +73,14 @@ app.use(passport.initialize());
 app.use(passport.session());
 // All the statics file will be served from the public folder
 app.use(express.static('public'));
+
+
+//Serve the static js files in ../libs folder from root when on production
+//WELCOME IS A MORE ELEGANT WAY!!
+if ('development' !== app.get('env')) {
+  app.use('..libs/', express.static(__dirname + 'public/libs'));
+} 
+
 // Redirect to index.html file when load the app
 app.get('/', function(req, res){
     res.sendFile(__dirname + '/public/views/index.html');

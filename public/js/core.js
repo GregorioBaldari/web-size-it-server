@@ -1,13 +1,13 @@
+
 var weSizeItApp = angular.module('weSizeItApp', [
         'ngRoute',
         'chart.js',
         'userService',
-        //'pbService',
         'appControllers',
-        //'pbController',
-        'UserApp'
+        'UserApp',
+        'angulartics', 
+        'angulartics.google.analytics'
     ]);
-//'UserApp',
 
 var user_id = "";
 
@@ -18,8 +18,9 @@ weSizeItApp.factory('socket', ['$rootScope', function ($rootScope) {
     //var projectSpace = 'projectSpace';
     //var socket = io('https://secret-lake-6472.herokuapp.com/' + projectSpace);
     //var socket = io('http://localhost:3000/' + projectSpace);
-    //var socket = io('https://wesizeit.herokuapp.com');
-    var socket = io('http://localhost:3000');
+    
+    var socket = io('https://wesizeit.herokuapp.com');
+    //var socket = io('http://localhost:3000');
     var socket;
     return {
 
