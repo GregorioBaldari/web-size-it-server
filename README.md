@@ -4,15 +4,10 @@
 
 ```bash
 npm install
-
-npm install -g grunt-cli 
-
-npm install -g bower
-bower install
 ```
 
 # Running
 
 ```bash
-npm start
+grunt dev
 ```
