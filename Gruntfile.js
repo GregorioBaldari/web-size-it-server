@@ -29,6 +29,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-nodemon');
 
   // register the nodemon task when we run grunt
-  grunt.registerTask('default', ['bower','nodemon']);
+  grunt.registerTask('default', ['bower']);
+  grunt.registerTask('dev', ['bower','nodemon']);
   
 };

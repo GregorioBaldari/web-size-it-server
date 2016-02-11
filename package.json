@@ -5,7 +5,8 @@
   "description": "mvp1",
   "main": "server.js",
   "scripts": {
-    "start": "grunt"
+    "postinstall": "grunt",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
