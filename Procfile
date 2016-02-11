@@ -1,3 +1,0 @@
-"scripts": {
-  "postinstall": "bower install"
-}
