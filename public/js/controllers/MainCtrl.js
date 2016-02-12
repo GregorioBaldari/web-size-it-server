@@ -50,7 +50,8 @@ appControllers.controller('mainViewCtrl', ['$scope', 'socket', 'UserService', fu
     })};
     
     //On event sent from the server add the mobile-client to the team list if needed and call an update of the tables 
-    socket.on('newData', function (data) {
+    socket.on('newData', function (dataPre) {
+        var data = dataPre.model;
         console.log(data.userName + ' updated size: ' + data.size);
         
         var temp = [];
