@@ -145,22 +145,17 @@ io.on('connection', function (socket) {
     socket.on('updateModel', function(data){
         console.log('**SOCKET**');
         console.log('Receiving new data from Socket: ' + socket.id);
-        console.log('By user: ' + data.userName);
+        console.log('By user: ' + data.model.userName);
         console.log('In Room ' + socket.room);
+        data.userId= socket.id;
         socket.broadcast.to(socket.room).emit('newData', {
-            risk: data.risk,
-            effort: data.effort,
-            complexity: data.complexity,
-            size: data.size,
-            connected: data.connected,
-            userName: data.userName,
-            userId: socket.id
+              model: data.model
         });
         console.log('**Emitted Data**');
-        console.log('Size: ' + data.size);
-        console.log('Risk: ' + data.risk);
-        console.log('Complexity: ' + data.complexity);
-        console.log('Effort: ' + data.effort);
+        console.log('Size: ' + data.model.size);
+        console.log('Risk: ' + data.model.risk);
+        console.log('Complexity: ' + data.model.complexity);
+        console.log('Effort: ' + data.model.effort);
     })
 
     //Called when the mobile app send a request to join the room
