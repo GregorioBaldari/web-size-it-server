@@ -6,7 +6,6 @@ var express         = require('express'),
     http            = require('http'),
     passport        = require('passport'),
     flash           = require('connect-flash'),
-    UserAppStrategy = require('passport-userapp').Strategy,
     bodyParser      = require('body-parser'),
     methodOverride  = require('method-override'),
     mongoose        = require('mongoose'),
@@ -23,42 +22,42 @@ var User = require('./app/models/user');
 var port = process.env.PORT || 3000;
 
 // Passport session setup
-passport.serializeUser(function (user, done) {
-    console.log('**PASSPORT**');
-    console.log('Serializing User');
-    done(null, user.email);
-});
-
-passport.deserializeUser(function (email, done) {
-    console.log('**PASSPORT**');
-    console.log('Deserializing User');
-    var user = _.find(users, function (user) {
-        return user.email == email;
-    });
-    if (user === undefined) {
-        done(new Error('No user with email "' + email + '" found.'));
-    } else {
-        done(null, user);
-    }
-});
+//passport.serializeUser(function (user, done) {
+//    console.log('**PASSPORT**');
+//    console.log('Serializing User');
+//    done(null, user.email);
+//});
+//
+//passport.deserializeUser(function (email, done) {
+//    console.log('**PASSPORT**');
+//    console.log('Deserializing User');
+//    var user = _.find(users, function (user) {
+//        return user.email == email;
+//    });
+//    if (user === undefined) {
+//        done(new Error('No user with email "' + email + '" found.'));
+//    } else {
+//        done(null, user);
+//    }
+//});
 
 // Use the UserAppStrategy within Passport
 // Retrieve user_id from UserApp and store with name in MongoDb
-passport.use( new UserAppStrategy({ appId: '563f8a3e36901'},
-    function (userprofile, done) {
-        console.log('**PASSPORT**');
-        console.log('Registering User in Node');
-        process.nextTick(function () {
-            User.findOrCreate(
-                {customer_id: userprofile.id},
-                {email: userprofile.email, name: userprofile._raw.first_name},
-                function(err, userprofile, created) {
-            if (created) console.log("User: " + userprofile.customer_id + ": Has been created for: " + userprofile.email);
-            if (!created) console.log("User: " + userprofile.customer_id +": Already exists");
-        });
-        });
-    }
-));
+//passport.use( new UserAppStrategy({ appId: '563f8a3e36901'},
+//    function (userprofile, done) {
+//        console.log('**PASSPORT**');
+//        console.log('Registering User in Node');
+//        process.nextTick(function () {
+//            User.findOrCreate(
+//                {customer_id: userprofile.id},
+//                {email: userprofile.email, name: userprofile._raw.first_name},
+//                function(err, userprofile, created) {
+//            if (created) console.log("User: " + userprofile.customer_id + ": Has been created for: " + userprofile.email);
+//            if (!created) console.log("User: " + userprofile.customer_id +": Already exists");
+//        });
+//        });
+//    }
+//));
 
 // Configure Express ===========================================
 app.set('port', port);
@@ -69,8 +68,8 @@ app.use(bodyParser.json());
 app.use(methodOverride('X-HTTP-Method-Override'));
 
 // Initialize Passport
-app.use(passport.initialize());
-app.use(passport.session());
+//app.use(passport.initialize());
+//app.use(passport.session());
 // All the statics file will be served from the public folder
 app.use(express.static('public'));
 
@@ -83,7 +82,7 @@ if ('development' !== app.get('env')) {
 
 // Redirect to index.html file when load the app
 app.get('/', function(req, res){
-    res.sendFile(__dirname + '/public/views/index.html');
+    res.sendFile(__dirname + '/public/views/home.html');
 });
 
 // Data Base Stuff ===========================================
