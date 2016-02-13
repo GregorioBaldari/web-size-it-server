@@ -9,6 +9,7 @@
     "animate.css": "latest",
     "angular": "latest",
     "angular-route": "latest",
+    "ui-router":"0.2.18",
     "angular-ui-bootstrap-bower" : "0.13.4",
     "angular-ng-pageslide" : "latest",
     "angular-sanitize" : "latest",

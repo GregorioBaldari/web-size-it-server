@@ -21,35 +21,21 @@
     <!-- End Google Analytics -->
 </head>
 <body ng-app="weSizeItApp">
-    <div ng-model="team" class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <nav class="navbar navbar-default navbar-fixed-top">
-                    <div class="container">
-                        <div class="navbar-header">
-                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                                <span class="sr-only">Toggle navigation</span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                            </button>
-                            <a class="navbar-brand" href="#room">WeSizeIT</a>
-                        </div>
-                    </div>
-                </nav>
-            </div>
+    <nav class="navbar navbar-inverse" role="navigation">
+        <div class="navbar-header">
+            <a class="navbar-brand" ui-sref="home">Scrum Box</a>
         </div>
-        <div class="row" style="margin-top: 4%;">
-            <div class="col-md-12">        
-                <div ng-view>
-                </div>
-            </div>
-        </div>
-    </div>
-<a href="login" analytics-on="click" analytics-event="Log Out" ua-logout>Log Out</a>
-</body>
+        <ul class="nav navbar-nav">
+            <li><a ui-sref="signup">Register</a></li>
+            <li><a ui-sref="login">Login</a></li>
+        </ul>
+    </nav>
     
-     <!-- JQuery
+    <div class="container">
+        <div ui-view></div>
+    </div>
+</body>   
+ <!-- JQuery
     ================================================== -->
     <script src="../libs/jquery/dist/jquery.min.js"></script>
     <script src="../libs/jquery-ui/jquery-ui.min.js"></script>
@@ -58,8 +44,7 @@
     ================================================== -->
     <script src="../libs/angular/angular.min.js"></script>
     <script src="../libs/angular-ui-bootstrap-bower/ui-bootstrap.min.js"></script>
-    <script src="../libs/angular-route/angular-route.min.js"></script>
-    <script src="../libs/ui-router/release/angular-ui-router.min.js"></script>
+    <script src="../libs/ui-router/release/angular-ui-router.js"></script>
     <script src="../libs/angular-ng-pageslide/dist/angular-pageslide-directive.min.js"></script>
     <script src="../libs/angular-sanitize/angular-sanitize.min.js"></script>
     <script src="../staticLib/Chart.js"></script>
@@ -68,8 +53,10 @@
     
     <!-- User-App
     ================================================== -->
+<!--
     <script src="../libs/userapp/userapp.client.js"></script>
     <script src="../libs/userapp-angular/angularjs.userapp.js"></script>
+-->
     
     <!-- Bootstrap
     ================================================== -->
