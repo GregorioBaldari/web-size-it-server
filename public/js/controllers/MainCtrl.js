@@ -8,7 +8,7 @@ appControllers.controller('mainViewCtrl', ['$scope', '$user', 'socket', 'UserSer
     $scope.team = team;
    
     $scope.currentUser = {};
-    $scope.tempRoom_id = "";
+    $scope.tempRoom_name = "";
     $scope.tempRoom_key = "";
     
     $scope.riskseries = [[]];
@@ -34,6 +34,7 @@ appControllers.controller('mainViewCtrl', ['$scope', '$user', 'socket', 'UserSer
     .then(function (user) {
         console.log('The current user is', user.givenName);
         console.log('With email: ', user.email);
+        UserService.registerUsers(user);
     })
     .catch(function (error) {
       console.log('Error getting user', error);
@@ -45,9 +46,9 @@ appControllers.controller('mainViewCtrl', ['$scope', '$user', 'socket', 'UserSer
             return UserService.getUser();
         },
         function (user) {
-            if (user !== undefined && user.room_id !== undefined ) {
+            if (user !== undefined && user.room_name !== undefined ) {
                 $scope.initializeRoom(user);
-                $scope.tempRoom_id = user.room_id;
+                $scope.tempRoom_name = user.room_name;
             }
         },
         true
@@ -55,7 +56,7 @@ appControllers.controller('mainViewCtrl', ['$scope', '$user', 'socket', 'UserSer
     
     $scope.initializeRoom = function (user) {
         socket.emit('dashboardConnection', user, function (data) {
-                    console.log('Connecting to room: ' + user.room_id);
+                    console.log('Connecting to room: ' + user.room_name);
     })};
     
     //On event sent from the server add the mobile-client to the team list if needed and call an update of the tables 
@@ -161,7 +162,7 @@ appControllers.controller('mainViewCtrl', ['$scope', '$user', 'socket', 'UserSer
     
     //Send room details to the server and update the user details. this will call the fire of a socket event to notify the server
     $scope.updateRoomDetails = function () {
-        UserService.getUser().room_id = $scope.tempRoom_id;
+        UserService.getUser().room_name = $scope.tempRoom_name;
         UserService.getUser().room_key = $scope.tempRoom_key;
         UserService.updateUsers();
     };

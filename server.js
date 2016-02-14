@@ -134,13 +134,13 @@ io.on('connection', function (socket) {
     socket.on('dashboardConnection', function (user) {
         console.log('**SOCKET**');
         console.log('Dashboard connetion In Progress for User ID: ' + user._id);
-        console.log('In room: ' + user.room_id);
+        console.log('In room: ' + user.room_name);
         //To be sure the client is not in any more room
         socket.leave(socket.room);
-        socket.room = user.room_id;
-        socket.join(user.room_id);
+        socket.room = user.room_name;
+        socket.join(user.room_name);
         socket.type = 'Dashboard';
-        console.log('Dashboard joined room: ' + user.room_id);
+        console.log('Dashboard joined room: ' + user.room_name);
     });
 
     //Called when the mobile app send a new data to the Dashboard App
@@ -149,7 +149,7 @@ io.on('connection', function (socket) {
         console.log('Receiving new data from Socket: ' + socket.id);
         console.log('By user: ' + data.model.userName);
         console.log('In Room ' + socket.room);
-        data.userId= socket.id;
+        data.model.userId= socket.id;
         socket.broadcast.to(socket.room).emit('newData', {
               model: data.model
         });

@@ -10,8 +10,8 @@ module.exports = function (app) {
         console.log('**ROUTER**');
         console.log('Registering connected user');
         User.findOrCreate(
-            {user_id: req.body.user_id},
-            {email: req.body.email, name: req.body.first_name},
+            {email: req.body.email, },
+            {name: req.body.givenName},
             function (error, user, created) {
                 if (error) res.status(500).send(error)
                 //if(created) console.log('Welcome to the new User');
@@ -22,12 +22,12 @@ module.exports = function (app) {
     
     //Find user and update is details
     //So far used for update the room_id only
-    app.put('/api/users/:user_id', function (req, res) {
+    app.put('/api/users/:_id', function (req, res) {
         console.log('**ROUTER**');
         console.log('Udating details for: ' + req.body.name);
-        User.findOne({user_id: req.params.user_id   }, function (err, user) {
+        User.findOne({_id: req.params._id   }, function (err, user) {
             if (err) res.status(500).send(err);
-            user.room_id = req.body.room_id;
+            user.room_name = req.body.room_name;
             user.room_key = req.body.room_key;
             user.save(function (err) {
                 if (err) res.status(500).send(err);
