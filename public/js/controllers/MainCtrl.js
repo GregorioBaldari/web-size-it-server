@@ -1,9 +1,9 @@
 'use strict';
 
-var appControllers = angular.module('appControllers', ['chart.js']);
+var appControllers = angular.module('appControllers', ['chart.js', "stormpath"]);
 
 //Main View Controller
-appControllers.controller('mainViewCtrl', ['$scope', 'socket', 'UserService', function ($scope, socket, UserService) {
+appControllers.controller('mainViewCtrl', ['$scope', '$user', 'socket', 'UserService', function ($scope, $user, socket, UserService) {
     var team = [];
     $scope.team = team;
    
@@ -29,6 +29,15 @@ appControllers.controller('mainViewCtrl', ['$scope', 'socket', 'UserService', fu
         'minsize'  : [],
         'maxsize' : []
     };
+    
+    $user.get()
+    .then(function (user) {
+        console.log('The current user is', user.givenName);
+        console.log('With email: ', user.email);
+    })
+    .catch(function (error) {
+      console.log('Error getting user', error);
+    });
     
     //When User data is retrieved after login inform the server of the room is connectiong to
     $scope.$watch(

@@ -1,11 +1,13 @@
 
 var weSizeItApp = angular.module('weSizeItApp', [
-        'ui.router',
+        'ui.router',   
+        'stormpath',
+        'stormpath.templates',
         'chart.js',
         'userService',
         'appControllers',
         'angulartics', 
-        'angulartics.google.analytics'
+        'angulartics.google.analytics',
     ]);
 
 var user_id = "";
@@ -51,36 +53,44 @@ weSizeItApp.factory('socket', ['$rootScope', function ($rootScope) {
     };
 }]);
 
-weSizeItApp.config(function($stateProvider, $urlRouterProvider) {
+weSizeItApp.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
     
     $urlRouterProvider.otherwise('/home');
     
+    $locationProvider.html5Mode(true);
+    
     $stateProvider
         
-        // HOME STATES AND NESTED VIEWS ========================================
         .state('home', {
             url: '/home',
             templateUrl: 'views/landing.html'
         })
         
-        // nested list with custom controller
         .state('login', {
-            url: '/list',
+            url: '/login',
             templateUrl: 'views/login.html'
         })
         
+        .state('forgot', {
+            url: '/forgot',
+            templateUrl: 'views/forgot-password.html'
+        })
+        
         // nested list with just some random string data
-        .state('signup', {
-            url: '/signup',
-            templateUrl: 'views/signup.html'
+        .state('register', {
+            url: '/register',
+            templateUrl: 'views/register.html'
         })
         
         // ABOUT PAGE AND MULTIPLE NAMED VIEWS =================================
         .state('room', {
             url: '/room',
-            templateUrl: 'views/room.html'
+            sp: {
+                authenticate: true
+            },
+            templateUrl: 'views/room.html',
+            controller: 'mainViewCtrl'
         });
-        
 });
 //
 //weSizeItApp.config(['$routeProvider', function ($routeProvider) {
@@ -107,7 +117,16 @@ weSizeItApp.config(function($stateProvider, $urlRouterProvider) {
 //The btoa() function may not be supported by all browsers.
 //btoa() is used to autoriz the backend API
 //weSizeItApp.run(function($rootScope, user,$http, PBs, UserService, UserApp) {
-weSizeItApp.run(function($rootScope, $http, UserService) {
+weSizeItApp.run(function($stormpath,$rootScope,$state) {
+    
+    $stormpath.uiRouter({
+      loginState: 'login',
+      defaultPostLoginState: 'room'
+    });
+    
+    $rootScope.$on('$sessionEnd',function () {
+      $state.transitionTo('home');
+    });
 //	user.init({ appId: '563f8a3e36901' });
 //    $rootScope.$on('user.login', function () {
 //        console.log('User Token: ' + user.token());

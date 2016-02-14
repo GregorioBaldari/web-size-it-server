@@ -1,5 +1,9 @@
-<!--<!DOCTYPE html>-->
-<html>
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
 
 <!-- Bootstrap theme -->
 <link rel="stylesheet" href="../libs/bootstrap/dist/css/bootstrap-theme.min.css">
@@ -7,6 +11,8 @@
 <link rel="stylesheet" href="../libs/angular-chart/angular-chart.min.js">    
 <link rel="stylesheet" type="text/css" href="../css/style.css"/>
 <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>WeSizeIT</title>
     <!-- Google Analytics -->
     <script>
@@ -19,6 +25,7 @@
         //ga('create', 'UA-73584409-1', 'auto'); //Use this when on production
     </script>
     <!-- End Google Analytics -->
+    <base href="/">
 </head>
 <body ng-app="weSizeItApp">
     <nav class="navbar navbar-inverse" role="navigation">
@@ -26,8 +33,9 @@
             <a class="navbar-brand" ui-sref="home">Scrum Box</a>
         </div>
         <ul class="nav navbar-nav">
-            <li><a ui-sref="signup">Register</a></li>
+            <li><a ui-sref="register">Register</a></li>
             <li><a ui-sref="login">Login</a></li>
+            <li><a ui-sref="home" sp-logout>Logout</a></li></li>
         </ul>
     </nav>
     
@@ -51,6 +59,11 @@
     <script src="../staticLib/angular-chart.min.js"></script>
     <script src="../libs/angular-ui-sortable/sortable.min.js"></script>
     
+    <!-- Angular
+    ================================================== -->
+    <script src="../libs/stormpath-sdk-angularjs/dist/stormpath-sdk-angularjs.min.js"></script>
+    <script src="../libs/stormpath-sdk-angularjs/dist/stormpath-sdk-angularjs.tpls.min.js"></script>
+    
     <!-- User-App
     ================================================== -->
 <!--
@@ -67,6 +80,7 @@
     <script src="../js/core.js"></script>
     <script src="../js/services/userService.js"></script>
     <script src="../js/controllers/MainCtrl.js"></script>
+<!--    <script src="login/login.js"></script>-->
 
     <!-- SocketIO
     ================================================== -->
