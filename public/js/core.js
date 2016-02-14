@@ -63,23 +63,51 @@ weSizeItApp.config(function($stateProvider, $urlRouterProvider, $locationProvide
         
         .state('home', {
             url: '/home',
-            templateUrl: 'views/landing.html'
+            views: {
+                nav: {
+                  templateUrl: 'views/general-bar.html'
+                },
+                content: {
+                  templateUrl: 'views/landing.html'
+                }
+            }
         })
         
         .state('login', {
             url: '/login',
-            templateUrl: 'views/login.html'
+            views: {
+                nav: {
+                  templateUrl: 'views/general-bar.html'
+                },
+                content: {
+                  templateUrl: 'views/login.html'
+                }
+            }
         })
         
         .state('forgot', {
             url: '/forgot',
-            templateUrl: 'views/forgot-password.html'
+            views: {
+                nav: {
+                  templateUrl: 'views/general-bar.html'
+                },
+                content: {
+                  templateUrl: 'views/forgot-password.html'
+                }
+            }
         })
         
         // nested list with just some random string data
         .state('register', {
             url: '/register',
-            templateUrl: 'views/register.html'
+            views: {
+                nav: {
+                  templateUrl: 'views/general-bar.html'
+                },
+                content: {
+                  templateUrl: 'views/register.html'
+                }
+            }
         })
         
         // ABOUT PAGE AND MULTIPLE NAMED VIEWS =================================
@@ -88,7 +116,14 @@ weSizeItApp.config(function($stateProvider, $urlRouterProvider, $locationProvide
             sp: {
                 authenticate: true
             },
-            templateUrl: 'views/room.html',
+            views: {
+                nav: {
+                  templateUrl: 'views/room-bar.html'
+                },
+                content: {
+                  templateUrl: 'views/room.html'
+                }
+            },
             controller: 'mainViewCtrl'
         });
 });

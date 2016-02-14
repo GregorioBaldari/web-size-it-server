@@ -6,6 +6,7 @@ var appControllers = angular.module('appControllers', ['chart.js', "stormpath"])
 appControllers.controller('mainViewCtrl', ['$scope', '$user', 'socket', 'UserService', function ($scope, $user, socket, UserService) {
     var team = [];
     $scope.team = team;
+    $scope.userName= "";
    
     $scope.currentUser = {};
     $scope.tempRoom_name = "";
@@ -35,6 +36,7 @@ appControllers.controller('mainViewCtrl', ['$scope', '$user', 'socket', 'UserSer
         console.log('The current user is', user.givenName);
         console.log('With email: ', user.email);
         UserService.registerUsers(user);
+        $scope.userName = $user.givenName;
     })
     .catch(function (error) {
       console.log('Error getting user', error);
