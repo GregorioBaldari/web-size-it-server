@@ -53,6 +53,7 @@
     "underscore": "1.4.3"
   },
   "devDependencies": {
+    "grunt-ng-constant": "^2.0.0",
     "grunt-nodemon": "~0.3.0"
   },
   "directories": {

@@ -1,5 +1,6 @@
 
 var weSizeItApp = angular.module('weSizeItApp', [
+        'config',
         'ui.router',   
         'stormpath',
         'stormpath.templates',
@@ -12,7 +13,7 @@ var weSizeItApp = angular.module('weSizeItApp', [
 
 var user_id = "";
 
-weSizeItApp.factory('socket', ['$rootScope', function ($rootScope) {
+weSizeItApp.factory('socket', ['$rootScope', 'ENV', function ($rootScope, ENV) {
     //The following namespace is used on server side.
     //TO DO
     //Let's the user create a namespace, register it on server, and connet to it
@@ -21,7 +22,7 @@ weSizeItApp.factory('socket', ['$rootScope', function ($rootScope) {
     //var socket = io('http://localhost:3000/' + projectSpace);
     
     //var socket = io('https://wesizeit.herokuapp.com');
-    var socket = io('http://localhost:3000');
+    var socket = io(ENV.apiEndpoint);
     var socket;
     return {
 
