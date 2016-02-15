@@ -1,4 +1,5 @@
 node_modules
 public/libs
+public/config
 log
 *.log
