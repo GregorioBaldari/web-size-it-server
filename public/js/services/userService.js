@@ -32,7 +32,7 @@ angular.module('userService', [])
             //Update the users details (i.e. room details)
             updateUsers : function () {
                 console.log("In Update User service for: " + currentUser.name);
-                return $http.put('/api/users/' + currentUser.user_id, currentUser).then( 
+                return $http.put('/api/users/' + currentUser._id, currentUser).then( 
                     //Success
                     function(res){
                         console.log("User successfully upadted: " + res.data.name);

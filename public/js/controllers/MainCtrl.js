@@ -1,14 +1,15 @@
 'use strict';
 
-var appControllers = angular.module('appControllers', ['chart.js']);
+var appControllers = angular.module('appControllers', ['chart.js', "stormpath"]);
 
 //Main View Controller
-appControllers.controller('mainViewCtrl', ['$scope', 'socket', 'UserService', function ($scope, socket, UserService) {
+appControllers.controller('mainViewCtrl', ['$scope', '$user', 'socket', 'UserService', function ($scope, $user, socket, UserService) {
     var team = [];
     $scope.team = team;
+    $scope.userName= "";
    
     $scope.currentUser = {};
-    $scope.tempRoom_id = "";
+    $scope.tempRoom_name = "";
     $scope.tempRoom_key = "";
     
     $scope.riskseries = [[]];
@@ -30,15 +31,26 @@ appControllers.controller('mainViewCtrl', ['$scope', 'socket', 'UserService', fu
         'maxsize' : []
     };
     
+    $user.get()
+    .then(function (user) {
+        console.log('The current user is', user.givenName);
+        console.log('With email: ', user.email);
+        UserService.registerUsers(user);
+        $scope.userName = $user.givenName;
+    })
+    .catch(function (error) {
+      console.log('Error getting user', error);
+    });
+    
     //When User data is retrieved after login inform the server of the room is connectiong to
     $scope.$watch(
         function () {
             return UserService.getUser();
         },
         function (user) {
-            if (user !== undefined && user.room_id !== undefined ) {
+            if (user !== undefined && user.room_name !== undefined ) {
                 $scope.initializeRoom(user);
-                $scope.tempRoom_id = user.room_id;
+                $scope.tempRoom_name = user.room_name;
             }
         },
         true
@@ -46,11 +58,12 @@ appControllers.controller('mainViewCtrl', ['$scope', 'socket', 'UserService', fu
     
     $scope.initializeRoom = function (user) {
         socket.emit('dashboardConnection', user, function (data) {
-                    console.log('Connecting to room: ' + user.room_id);
+                    console.log('Connecting to room: ' + user.room_name);
     })};
     
     //On event sent from the server add the mobile-client to the team list if needed and call an update of the tables 
-    socket.on('newData', function (data) {
+    socket.on('newData', function (dataPre) {
+        var data = dataPre.model;
         console.log(data.userName + ' updated size: ' + data.size);
         
         var temp = [];
@@ -151,7 +164,7 @@ appControllers.controller('mainViewCtrl', ['$scope', 'socket', 'UserService', fu
     
     //Send room details to the server and update the user details. this will call the fire of a socket event to notify the server
     $scope.updateRoomDetails = function () {
-        UserService.getUser().room_id = $scope.tempRoom_id;
+        UserService.getUser().room_name = $scope.tempRoom_name;
         UserService.getUser().room_key = $scope.tempRoom_key;
         UserService.updateUsers();
     };

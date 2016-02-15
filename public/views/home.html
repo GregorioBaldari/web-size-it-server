@@ -1,5 +1,9 @@
-<!--<!DOCTYPE html>-->
-<html>
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
 
 <!-- Bootstrap theme -->
 <link rel="stylesheet" href="../libs/bootstrap/dist/css/bootstrap-theme.min.css">
@@ -7,6 +11,8 @@
 <link rel="stylesheet" href="../libs/angular-chart/angular-chart.min.js">    
 <link rel="stylesheet" type="text/css" href="../css/style.css"/>
 <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>WeSizeIT</title>
     <!-- Google Analytics -->
     <script>
@@ -19,37 +25,15 @@
         ga('create', 'UA-73584409-1', 'auto'); //Use this when on production
     </script>
     <!-- End Google Analytics -->
+    <base href="/">
 </head>
 <body ng-app="weSizeItApp">
-    <div ng-model="team" class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <nav class="navbar navbar-default navbar-fixed-top">
-                    <div class="container">
-                        <div class="navbar-header">
-                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                                <span class="sr-only">Toggle navigation</span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                            </button>
-                            <a class="navbar-brand" href="#room">WeSizeIT</a>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-        </div>
-        <div class="row" style="margin-top: 4%;">
-            <div class="col-md-12">        
-                <div ng-view>
-                </div>
-            </div>
-        </div>
+    <div ui-view name="nav"></div>
+    <div class="container">
+        <div ui-view name="content"></div>
     </div>
-<a href="login" analytics-on="click" analytics-event="Log Out" ua-logout>Log Out</a>
-</body>
-    
-     <!-- JQuery
+</body>   
+ <!-- JQuery
     ================================================== -->
     <script src="../libs/jquery/dist/jquery.min.js"></script>
     <script src="../libs/jquery-ui/jquery-ui.min.js"></script>
@@ -58,17 +42,24 @@
     ================================================== -->
     <script src="../libs/angular/angular.min.js"></script>
     <script src="../libs/angular-ui-bootstrap-bower/ui-bootstrap.min.js"></script>
-    <script src="../libs/angular-route/angular-route.min.js"></script>
+    <script src="../libs/ui-router/release/angular-ui-router.js"></script>
     <script src="../libs/angular-ng-pageslide/dist/angular-pageslide-directive.min.js"></script>
     <script src="../libs/angular-sanitize/angular-sanitize.min.js"></script>
     <script src="../staticLib/Chart.js"></script>
     <script src="../staticLib/angular-chart.min.js"></script>
     <script src="../libs/angular-ui-sortable/sortable.min.js"></script>
     
+    <!-- Angular
+    ================================================== -->
+    <script src="../libs/stormpath-sdk-angularjs/dist/stormpath-sdk-angularjs.min.js"></script>
+    <script src="../libs/stormpath-sdk-angularjs/dist/stormpath-sdk-angularjs.tpls.min.js"></script>
+    
     <!-- User-App
     ================================================== -->
+<!--
     <script src="../libs/userapp/userapp.client.js"></script>
     <script src="../libs/userapp-angular/angularjs.userapp.js"></script>
+-->
     
     <!-- Bootstrap
     ================================================== -->
@@ -79,6 +70,8 @@
     <script src="../js/core.js"></script>
     <script src="../js/services/userService.js"></script>
     <script src="../js/controllers/MainCtrl.js"></script>
+    <script src="../config/config.js"></script>
+<!--    <script src="login/login.js"></script>-->
 
     <!-- SocketIO
     ================================================== -->
