@@ -136,12 +136,13 @@ io.on('connection', function (socket) {
         console.log('**SOCKET**');
         console.log('Dashboard connetion In Progress for User ID: ' + user._id);
         console.log('In room: ' + user.room_name);
+        var tempRoomName = user.room_name
         //To be sure the client is not in any more room
         socket.leave(socket.room);
-        socket.room = user.room_name;
-        socket.join(user.room_name);
+        socket.room = tempRoomName.concat(user.room_key);
+        socket.join(socket.room);
         socket.type = 'Dashboard';
-        console.log('Dashboard joined room: ' + user.room_name);
+        console.log('Dashboard joined room: ' + user.room_name + user.room_key );
     });
 
     //Called when the mobile app send a new data to the Dashboard App
