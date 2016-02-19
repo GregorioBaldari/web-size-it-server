@@ -125,7 +125,12 @@ weSizeItApp.config(function($stateProvider, $urlRouterProvider, $locationProvide
                   templateUrl: 'views/room.html'
                 }
             }
-        });
+        })
+    
+        .state('room.options', {
+            url: '/options',
+            templateUrl: 'views/options-panel.html'
+        })
 });
 
 //This stuff is for login/logout

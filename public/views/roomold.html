@@ -1,0 +1,195 @@
+<!-- User Story List --> 
+<div ng-controller="mainViewCtrl">
+    <div class="user-story-list" style="width: 25%; position: absolute;">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Room</h3>
+            </div>
+            <form role="form">
+                <div class="form-inline">
+                    <div class="form-group" style="width: 29%;">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="room_name" ng-model="tempRoom_name" style="width: 100%;">
+                    </div>
+                    <div class="form-group" style="width: 70%;">
+                        <label for="key">Key</label>
+                        <input type="text" class="form-control" id="room_key" ng-model="tempRoom_key" style="width: 100%;">
+                    </div>
+                </div>
+                <button analytics-on="click" analytics-event="Save Room" type="submit" class="btn btn-default" ng-click="updateRoomDetails()">Submit</button>
+            </form>
+        </div>
+    </div>
+<!-- Risk Radar Chart -->
+    <div class="risk col-sm-offset-2 col-sm-9 col-md-offset-3 col-md-3">
+        <div class="panel panel-default" style="margin-bottom: 4%;">
+            <div class="panel-heading">
+                <h3 class="panel-title">Risk</h3>
+            </div>
+            <canvas id="radar" class="chart chart-radar" chart-labels="labels" chart-data="riskseries" style="margin-top: 4%;">
+            </canvas> 
+        </div>
+    </div>
+<!-- Complexity Radar Chart -->
+    <div class="complexity col-sm-3">
+        <div class="panel panel-default" style="margin-bottom: 4%;">
+            <div class="panel-heading">
+                <h3 class="panel-title">Complexity</h3>
+            </div>
+            <canvas id="radar" class="chart chart-radar" chart-data="complexityseries" chart-labels="labels" style="margin-top: 4%;">
+            </canvas> 
+        </div>
+    </div>
+<!-- Effort Radar Chart -->
+    <div class="effort col-sm-3">
+        <div class="panel panel-default" style="margin-bottom: 4%;">
+            <div class="panel-heading">
+                <h3 class="panel-title">Effort</h3>
+            </div>
+            <canvas id="radar" class="chart chart-radar" chart-data="effortseries" chart-labels="labels" style="margin-top: 4%;">
+            </canvas> 
+        </div>
+            <span class="glyphicon glyphicon-refresh" aria-hidden="true" ng-click="refreshRadar()"></span>
+        </div>
+    <div class="row">
+<!-- Risk Valeus Table -->  
+    <div class="risk-values col-sm-offset-2 col-sm-9 col-md-offset-3 col-md-3">
+        <div class="panel-body text-center">
+            <table class="table table-condensed" id="summaryTable">
+                <thead>
+                    <tr>
+                        <th>MIN</th>
+                        <th>MAX</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{maxandminvalues.risk.min}}</td>
+                        <td>{{maxandminvalues.risk.max}}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <ul class="list-group">
+                                <li class="list-group-item" ng-repeat="user in tablevalues.minrisk track by $index">
+                                    {{user}}
+                                </li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-group">
+                                <li class="list-group-item" ng-repeat="user in tablevalues.maxrisk track by $index">
+                                    {{user}}
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+<!-- Complexity Valeus Table --> 
+    <div class="complexity-values col-md-3">
+        <div class="panel-body text-center">
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th>MIN</th>
+                        <th>MAX</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{maxandminvalues.complexity.min}}</td>
+                        <td>{{maxandminvalues.complexity.max}}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <ul class="list-group">
+                                <li class="list-group-item" ng-repeat="user in tablevalues.mincomplexity track by $index">
+                                    {{user}}
+                                </li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-group">
+                                <li class="list-group-item" ng-repeat="user in tablevalues.maxcomplexity track by $index">
+                                    {{user}}
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+<!-- Effort Valeus Table -->    
+    <div class="effort-values col-md-3">
+        <div class="panel-body text-center">
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th>MIN</th>
+                        <th>MAX</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{maxandminvalues.effort.min}}</td>
+                        <td>{{maxandminvalues.effort.max}}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <ul class="list-group">
+                                <li class="list-group-item" ng-repeat="user in tablevalues.mineffort track by $index">
+                                    {{user}}
+                                </li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-group">
+                                <li class="list-group-item" ng-repeat="user in tablevalues.maxeffort track by $index">
+                                    {{user}}
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+<!-- All result Summary -->   
+<div class="row">
+    <div class="col-md-offset-3 col-md-9">
+        <div table-responsive>
+            <table class="table table-condensed">
+                <thead>
+                    <tr class="text-center">
+                        <th>User</th>
+                        <th>Size</th>
+                        <th>Risk</th>
+                        <th>Complexity</th>
+                        <th>Effort</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="user in team" class="text-center">
+                    <td>{{user.userName}}</td>
+                    <td ng-class = "{warning: (user.higherSize == 'true'), success: (user.lowerSize == 'true')}">
+                        {{user.size}}
+                    </td>
+                    <td ng-class = "{warning: (user.higherRisk == 'true'), success: (user.lowerRisk == 'true')}">
+                        {{user.risk}}
+                    </td>
+                    <td ng-class = "{warning: (user.higherComplexity == 'true'), success: (user.lowerComplexity == 'true')}">
+                        {{user.complexity}}
+                    </td>
+                    <td ng-class = "{warning: (user.higherEffort == 'true'),success: (user.lowerEffort == 'true')}">
+                        {{user.effort}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>   
+    </div>
+</div>
+</div>

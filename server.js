@@ -193,6 +193,7 @@ io.on('connection', function (socket) {
             });
             console.log('Desktop App notified in room: ' + socket.room);
         }
+        socket.disconnect();
     });
 });
 
