@@ -44,6 +44,7 @@ angular.module('userService', [])
                     });
             },
             
+            // Get from back end a new room key
             generateRoomKey : function () {
                 console.log("In Generare Room Key service for: " + currentUser.name);
                 return $http.get('/api/users/room_key').then( 
