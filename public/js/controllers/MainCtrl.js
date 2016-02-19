@@ -51,6 +51,7 @@ appControllers.controller('mainViewCtrl', ['$scope', '$user', 'socket', 'UserSer
             if (user !== undefined && user.room_name !== undefined ) {
                 $scope.initializeRoom(user);
                 $scope.tempRoom_name = user.room_name;
+                $scope.tempRoom_key = user.room_key;
             }
         },
         true
@@ -168,5 +169,10 @@ appControllers.controller('mainViewCtrl', ['$scope', '$user', 'socket', 'UserSer
         UserService.getUser().room_key = $scope.tempRoom_key;
         UserService.updateUsers();
     };
+    
+    $scope.generateRoomKey = function () {
+        UserService.generateRoomKey();
+        UserService.getUser().room_key = $scope.tempRoom_key;
+    }
     
 }]);
