@@ -4,7 +4,7 @@ var express         = require('express'),
     cookieParser    = require('cookie-parser'),
     session         = require('express-session')
     http            = require('http'),
-    passport        = require('passport'),
+    randomstring    = require("randomstring"),
     path            = require('path');
     stormpath       = require('express-stormpath');
     flash           = require('connect-flash'),
@@ -13,6 +13,7 @@ var express         = require('express'),
     mongoose        = require('mongoose'),
     _               = require('underscore'),
     app             = express();
+
 
 
 //DB STUFF configuration ===========================================
@@ -135,12 +136,13 @@ io.on('connection', function (socket) {
         console.log('**SOCKET**');
         console.log('Dashboard connetion In Progress for User ID: ' + user._id);
         console.log('In room: ' + user.room_name);
+        var tempRoomName = user.room_name
         //To be sure the client is not in any more room
         socket.leave(socket.room);
-        socket.room = user.room_name;
-        socket.join(user.room_name);
+        socket.room = tempRoomName.concat(user.room_key);
+        socket.join(socket.room);
         socket.type = 'Dashboard';
-        console.log('Dashboard joined room: ' + user.room_name);
+        console.log('Dashboard joined room: ' + user.room_name + user.room_key );
     });
 
     //Called when the mobile app send a new data to the Dashboard App

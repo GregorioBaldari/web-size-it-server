@@ -1,4 +1,5 @@
-var User = require('../models/user');
+var User = require('../models/user'),
+    randomstring = require("randomstring");
 
 module.exports = function (app) {
     
@@ -14,8 +15,6 @@ module.exports = function (app) {
             {name: req.body.givenName},
             function (error, user, created) {
                 if (error) res.status(500).send(error)
-                //if(created) console.log('Welcome to the new User');
-                //if(!created) console.log('Welcome back User')
                 res.send(user.toJSON());
             });
     });
@@ -34,5 +33,17 @@ module.exports = function (app) {
                 res.send(user.toJSON());
             });
         });
+    });
+    
+    //Generate a randoom room_key
+    app.get('/api/users/room_key', function (req, res) {
+        console.log('**ROUTER**');
+        console.log('Generating a Room Key');
+        var room_key = randomstring.generate({
+            length: 5,
+            readable: true,
+            charset: 'alphabetic'
+        });
+        res.send(room_key);
     });
 };

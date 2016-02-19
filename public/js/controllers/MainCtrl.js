@@ -4,22 +4,38 @@ var appControllers = angular.module('appControllers', ['chart.js', "stormpath"])
 
 //Main View Controller
 appControllers.controller('mainViewCtrl', ['$scope', '$user', 'socket', 'UserService', function ($scope, $user, socket, UserService) {
+    
+    //Support Variables for team management
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     var team = [];
     $scope.team = team;
+    // User Management Variables
     $scope.userName= "";
-   
-    $scope.currentUser = {};
-    $scope.tempRoom_name = "";
-    $scope.tempRoom_key = "";
+    $scope.currentUser = {};  
+    // Room Details Variables
+    $scope.roomDetails = {};  
+    $scope.roomDetails.tempRoom_name = "";  
+    $scope.roomDetails.tempRoom_key = "";  
     
+    // Table and Charts Variables
     $scope.riskseries = [[]];
     $scope.effortseries = [[]];
-    $scope.complexityseries = [[]];
-    
-    $scope.labels = [];
-    
-    $scope.maxandminvalues = {};
-    
+    $scope.complexityseries = [[]]; 
+    $scope.labels = []; 
+    $scope.maxandminvalues = {};  
     $scope.tablevalues = {
         'minrisk' : [],
         'maxrisk' : [],
@@ -32,15 +48,15 @@ appControllers.controller('mainViewCtrl', ['$scope', '$user', 'socket', 'UserSer
     };
     
     $user.get()
-    .then(function (user) {
-        console.log('The current user is', user.givenName);
-        console.log('With email: ', user.email);
-        UserService.registerUsers(user);
-        $scope.userName = $user.givenName;
-    })
-    .catch(function (error) {
-      console.log('Error getting user', error);
-    });
+        .then(function (user) {
+            console.log('The current user is', user.givenName);
+            console.log('With email: ', user.email);
+            UserService.registerUsers(user);
+            $scope.userName = $user.givenName;
+        })
+        .catch(function (error) {
+          console.log('Error getting user', error);
+        });
     
     //When User data is retrieved after login inform the server of the room is connectiong to
     $scope.$watch(
@@ -50,7 +66,8 @@ appControllers.controller('mainViewCtrl', ['$scope', '$user', 'socket', 'UserSer
         function (user) {
             if (user !== undefined && user.room_name !== undefined ) {
                 $scope.initializeRoom(user);
-                $scope.tempRoom_name = user.room_name;
+                $scope.roomDetails.tempRoom_name = user.room_name;
+                $scope.roomDetails.tempRoom_key = user.room_key;
             }
         },
         true
@@ -164,9 +181,16 @@ appControllers.controller('mainViewCtrl', ['$scope', '$user', 'socket', 'UserSer
     
     //Send room details to the server and update the user details. this will call the fire of a socket event to notify the server
     $scope.updateRoomDetails = function () {
-        UserService.getUser().room_name = $scope.tempRoom_name;
-        UserService.getUser().room_key = $scope.tempRoom_key;
+        UserService.getUser().room_name = $scope.roomDetails.tempRoom_name;
+        UserService.getUser().room_key = $scope.roomDetails.tempRoom_key;
         UserService.updateUsers();
     };
+    
+    //Require a new key from back end and update front end
+    $scope.generateRoomKey = function () {
+        UserService.generateRoomKey().then( function(){
+            $scope.roomDetails.tempRoom_key = UserService.getUser().room_key;
+        });   
+    }
     
 }]);

@@ -42,6 +42,22 @@ angular.module('userService', [])
                         console.log("User registration updated: " + res.status);
                         console.log("Error Code: " + res.status);
                     });
+            },
+            
+            // Get from back end a new room key
+            generateRoomKey : function () {
+                console.log("In Generare Room Key service for: " + currentUser.name);
+                return $http.get('/api/users/room_key').then( 
+                    //Success
+                    function(res){
+                        console.log("User successfully upadted: " + res.data);
+                        currentUser.room_key = res.data;
+                    },
+                    //Unsucess
+                    function(res) {
+                        console.log("User registration updated: " + res.status);
+                        console.log("Error Code: " + res.status);
+                    });
             }
             
         };
