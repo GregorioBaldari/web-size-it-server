@@ -4,7 +4,7 @@ var express         = require('express'),
     cookieParser    = require('cookie-parser'),
     session         = require('express-session')
     http            = require('http'),
-    passport        = require('passport'),
+    randomstring    = require("randomstring"),
     path            = require('path');
     stormpath       = require('express-stormpath');
     flash           = require('connect-flash'),
@@ -13,6 +13,7 @@ var express         = require('express'),
     mongoose        = require('mongoose'),
     _               = require('underscore'),
     app             = express();
+
 
 
 //DB STUFF configuration ===========================================
