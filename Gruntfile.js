@@ -110,6 +110,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-nodemon');
     
   grunt.registerTask('buildbower', [
+      'bower',
       'bower_concat',
       'uglify:bower',
       'string-replace'
