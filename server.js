@@ -110,21 +110,22 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 
 //Start app
-server.listen(app.get('port'), function() {
-    console.log("**NODE**");
-    console.log('Running on port', app.get('port'));
-});
+//server.listen(app.get('port'), function() {
+//    console.log("**NODE**");
+//    console.log('Running on port', app.get('port'));
+//});
     
 /**
  * Start the web server.
  */
-//app.on('stormpath.ready',function () {
-//  console.log('Stormpath Ready');
-//  var port = process.env.PORT || 3000;
-//  app.listen(port, function () {
-//    console.log('Application running at http://localhost:'+port);
-//  });
-//});
+app.on('stormpath.ready',function () {
+    console.log('Stormpath Ready');
+    var port = process.env.PORT || 3000;
+    server.listen(app.get('port'), function() {
+        console.log("**NODE**");
+        console.log('Running on port', app.get('port'));
+    });
+});
 
 //SocketIo configurations
 io.on('connection', function (socket) {
