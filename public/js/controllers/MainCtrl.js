@@ -7,19 +7,6 @@ appControllers.controller('mainViewCtrl', ['$scope', '$user', 'socket', 'UserSer
     
     //Support Variables for team management
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     var team = [];
     $scope.team = team;
     // User Management Variables

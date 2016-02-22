@@ -3,3 +3,7 @@ public/libs
 public/config
 log
 *.log
+
+public/dist/js/bower.js
+
+public/dist/js/bower.min.js
