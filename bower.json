@@ -17,7 +17,6 @@
     "userapp-angular" : "latest",
     "sio-client" : "latest",
     "chartjs" : "latest",
-    "angular-ui-sortable" : "latest",
     "angulartics" : "1.0.2",
     "angulartics-google-analytics" : "0.1.4",
     "stormpath-sdk-angularjs" : "0.9.0"

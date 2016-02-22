@@ -32,37 +32,25 @@
     <div class="container">
         <div ui-view name="content"></div>
     </div>
-</body>   
- <!-- JQuery
-    ================================================== -->
+</body>
+    
+<!--start DEV imports
     <script src="../libs/jquery/dist/jquery.min.js"></script>
     <script src="../libs/jquery-ui/jquery-ui.min.js"></script>
-    
-    <!-- Angular
-    ================================================== -->
-    <script src="../libs/angular/angular.min.js"></script>
     <script src="../libs/angular-ui-bootstrap-bower/ui-bootstrap.min.js"></script>
-    <script src="../libs/ui-router/release/angular-ui-router.js"></script>
+    <script src="../libs/ui-router/release/angular-ui-router.min.js"></script>
     <script src="../libs/angular-sanitize/angular-sanitize.min.js"></script>
-    <script src="../staticLib/Chart.js"></script>
-    <script src="../staticLib/angular-chart.min.js"></script>
-    <script src="../libs/angular-ui-sortable/sortable.min.js"></script>
-    
-    <!-- Angular
-    ================================================== -->
     <script src="../libs/stormpath-sdk-angularjs/dist/stormpath-sdk-angularjs.min.js"></script>
     <script src="../libs/stormpath-sdk-angularjs/dist/stormpath-sdk-angularjs.tpls.min.js"></script>
-    
-    <!-- User-App
-    ================================================== -->
-<!--
-    <script src="../libs/userapp/userapp.client.js"></script>
-    <script src="../libs/userapp-angular/angularjs.userapp.js"></script>
--->
-    
-    <!-- Bootstrap
-    ================================================== -->
     <script src="../libs/bootstrap/dist/js/bootstrap.min.js"></script>  
+    <script src="../libs/sio-client/socket.io.js"></script>
+    <script src="../libs/angulartics/dist/angulartics.min.js"></script>
+end DEV imports-->
+    
+<!--start PROD imports-->
+    <script src="../dist/js/bower.min.js"></script>
+<!--end PROD imports-->
+    
     
     <!-- This App
     ================================================== -->
@@ -70,16 +58,15 @@
     <script src="../js/services/userService.js"></script>
     <script src="../js/controllers/MainCtrl.js"></script>
     <script src="../config/config.js"></script>
-<!--    <script src="login/login.js"></script>-->
-
-    <!-- SocketIO
-    ================================================== -->
-    <script src="../libs/sio-client/socket.io.js"></script>
+    <script src="../libs/angular/angular.min.js"></script>
     
-    <!-- Google Analytics
+    <!-- Static
     ================================================== -->
-    <script src="../libs/angulartics/dist/angulartics.min.js"></script>
+    <script src="../staticLib/Chart.js"></script>
+    <script src="../staticLib/angular-chart.min.js"></script>
     <script src="../staticLib/angulartics-google-analytics.min.js"></script>
+    
+
     
     
 </html>

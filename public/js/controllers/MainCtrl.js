@@ -6,7 +6,6 @@ var appControllers = angular.module('appControllers', ['chart.js', "stormpath"])
 appControllers.controller('mainViewCtrl', ['$scope', '$user', 'socket', 'UserService', function ($scope, $user, socket, UserService) {
     
     //Support Variables for team management
-    
     var team = [];
     $scope.team = team;
     // User Management Variables
